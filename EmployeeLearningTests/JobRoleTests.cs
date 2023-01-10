@@ -80,8 +80,8 @@ namespace EmployeeLearningTests
         public void TestJobRoleVideosMarkAllAsWatched()
         {
             JobRole jobRole = new(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, videos);
-            jobRole.LearningPath.ForEach(v => v.MarkAsWatched());
             jobRole.LearningPath.Should().NotBeNull();
+            jobRole.LearningPath.ForEach(v => v.MarkAsWatched());
             bool isWatched = true;
             jobRole.LearningPath.ForEach(v => isWatched = isWatched && v.IsWatched);
             isWatched.Should().Be(true);
@@ -91,6 +91,7 @@ namespace EmployeeLearningTests
         public void TestJobRoleVideosMarkAllAsUnWatched()
         {
             JobRole jobRole = new(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, videos);
+            jobRole.LearningPath.Should().NotBeNull();
             bool isWatched = false;
             jobRole.LearningPath.ForEach(v => isWatched = isWatched || v.IsWatched);
             isWatched.Should().Be(false);
