@@ -9,24 +9,31 @@ namespace EmployeeLearning.model.jobrole
         #endregion
 
         #region PROPERTIES
-        public Int32? Id { get; set; }
-        public string? Name { get; set; }
-
-
-        public List<Video> LearningPath { get; set; }
+        public Nullable<int> Id { get; }
+        public string? Name { get; }
+        public List<Video> LearningPath { get; }
         #endregion
 
-        public JobRole()
+        public JobRole(Nullable<int> id, string? name, List<Video> videos)
         {
-            LearningPath = new List<Video>();
+            Id = id;
+            Name = name;
+            LearningPath = videos;
         }
 
         #region PUBLIC METHODS
 
         public void addVideo(Video video)
         {
-            LearningPath.Add(video);
+            if (LearningPath.IndexOf(video) < 0)
+            {
+                LearningPath.Add(video);
+            } else
+            {
+                // Nothing to do; 
+            }
         }
+
         public void removeVideo(int videoId)
         {
             LearningPath.Remove(FindVideoById(videoId));
@@ -44,7 +51,15 @@ namespace EmployeeLearning.model.jobrole
 
         public List<Video> GetWatchedVideos()
         {
-            return (List<Video>)LearningPath.Where(v => v.IsWatched == VIDEO_IS_WATCHED);
+            var watchedVideos = new List<Video>();
+            foreach (Video video in LearningPath)
+            {
+                if (video.IsWatched == VIDEO_IS_WATCHED)
+                {
+                    watchedVideos.Add(video);
+                } 
+            }
+            return watchedVideos;
         }
 
         public List<Video> GetAllVideos()

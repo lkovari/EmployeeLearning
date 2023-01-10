@@ -5,9 +5,9 @@ namespace EmployeeLearning.model.video
     public class Video : IVideo
     {
         #region PROPERTIES
-        public Nullable<int> Id { get; set; }
+        public Nullable<int> Id { get; }
         
-        public string Name { get; set; }
+        public string Name { get; }
 
         private bool _isWatched;
         public bool IsWatched { get { return _isWatched; } }
@@ -44,7 +44,7 @@ namespace EmployeeLearning.model.video
 
         private void CleanIsWatched()
         {
-            _isWatched = true;
+            _isWatched = false;
         }
 
         private void CleanWatchDate()

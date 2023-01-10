@@ -22,37 +22,29 @@ namespace EmployeeLearningTests
         private static readonly string VIDEO_TEST_NAME = "Ethics";
         private static readonly int JOBROLE_TEST_ID = 1;
         private static readonly string JOBROLE_TEST_NAME = "CTO";
-        private static readonly List<Video> videos = new();
-        private JobRole jobRole;
+        private static readonly int TWO_TIMES_WATCHED = 2;
+        private static readonly int ONE_VIDEO_WATCHER = 1;
         #endregion
 
-        [SetUp]
-        public void Setup()
+        private JobRole CreateJobRole()
         {
+            List<Video> videos = new();
             for (int ix = 0; ix < VIDEO_COUNT_FOR_TEST; ix++)
             {
                 videos.Add(new Video(VIDEO_TEST_ID + ix, VIDEO_TEST_NAME + ix));
             }
-            jobRole = new();
-            jobRole.Id = JOBROLE_TEST_ID;
-            jobRole.Name = JOBROLE_TEST_NAME;
-            jobRole.LearningPath = videos;
+            return new(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, videos);
         }
 
         private Employee CreateEmployee()
         {
-            Employee employee = new Employee();
-            employee.Id = EMPLOYEE_ID;
-            employee.LastName = EMPLOYEE_LAST_NAME;
-            employee.FirstName = EMPLOYEE_FIRST_NAME;
-            employee.JobRole = jobRole;
-            return employee;
+            return new Employee(EMPLOYEE_ID, EMPLOYEE_LAST_NAME, EMPLOYEE_FIRST_NAME, CreateJobRole());
         }
 
         [Test]
         public void EmployeeInstanceCreatedTest()
         {
-            Employee employee = new();
+            Employee employee = CreateEmployee();
             employee.Should().NotBeNull();
         }
 
@@ -81,6 +73,68 @@ namespace EmployeeLearningTests
             employee.JobRole.Should().NotBeNull();
         }
 
+        [Test]
+        public void EmployeeJobRoleVideoExistsTest()
+        {
+            Employee employee = CreateEmployee();
+            employee.Should().NotBeNull();
+            employee.JobRole.Should().NotBeNull();
+            employee.JobRole.LearningPath.Should().NotBeNull();
+            employee.JobRole.LearningPath.Count.Should().BeGreaterThan(0);
+        }
+
+        [Test]
+        public void EmployeeJobRoleVideoWatchedTest()
+        {
+            Employee employee = CreateEmployee();
+            employee.Should().NotBeNull();
+            employee.JobRole.Should().NotBeNull();
+            employee.JobRole.LearningPath.Should().NotBeNull();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).IsWatched.Should().BeTrue();
+        }
+
+        [Test]
+        public void EmployeeJobRoleVideoUnWatchedTest()
+        {
+            Employee employee = CreateEmployee();
+            employee.Should().NotBeNull();
+            employee.JobRole.Should().NotBeNull();
+            employee.JobRole.LearningPath.Should().NotBeNull();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsUnWatched();
+            employee.JobRole.LearningPath.ElementAt(0).IsWatched.Should().BeFalse();
+        }
+
+
+        [Test]
+        public void EmployeeJobRoleVideoHitCountTest()
+        {
+            Employee employee = CreateEmployee();
+            employee.Should().NotBeNull();
+            employee.JobRole.Should().NotBeNull();
+            employee.JobRole.LearningPath.Should().NotBeNull();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).HitCount.Should().BeGreaterThanOrEqualTo(TWO_TIMES_WATCHED);
+            employee.GetWatchedVideos().Should().NotBeNull();
+            employee.GetWatchedVideos().Count.Should().BeGreaterThanOrEqualTo(ONE_VIDEO_WATCHER);
+
+        }
+
+        [Test]
+        public void EmployeeJobRoleVideoHitCountClearTest()
+        {
+            Employee employee = CreateEmployee();
+            employee.Should().NotBeNull();
+            employee.JobRole.Should().NotBeNull();
+            employee.JobRole.LearningPath.Should().NotBeNull();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).MarkAsUnWatched();
+            employee.GetWatchedVideos().Should().NotBeNull();
+            employee.GetWatchedVideos().Count.Should().Be(0);
+        }
 
     }
 }

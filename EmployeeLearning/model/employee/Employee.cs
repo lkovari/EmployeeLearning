@@ -6,16 +6,25 @@ namespace EmployeeLearning.model.employee
     public class Employee : IEmployee
     {
         #region PROPERTIES
-        public int Id { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
+        private Nullable<int> _id;
+        public Nullable<int> Id { get { return _id; } }
+        
+        private string? _lastName;
+        public string LastName { get { return _lastName; } }
 
-        public JobRole JobRole { get; set; }
+        private string? _firstName;
+        public string? FirstName { get { return _firstName; } }
+
+        private JobRole _jobRole;
+        public JobRole JobRole { get { return _jobRole; } }
         #endregion
 
-        public Employee()
+        public Employee(Nullable<int> id, string? lastName, string? firstName, JobRole jobRole)
         {
-            JobRole = new JobRole();
+            _id = id;
+            _lastName = lastName;
+            _firstName = firstName;
+            _jobRole = jobRole;
         }
 
         #region PUBLIC METHODS
@@ -31,7 +40,7 @@ namespace EmployeeLearning.model.employee
 
         public List<Video> GetWatchedVideos()
         {
-            return JobRole.LearningPath;
+            return JobRole.GetWatchedVideos();
         }
 
         public Video GetVideoById(int videoId)

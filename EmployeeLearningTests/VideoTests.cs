@@ -90,12 +90,18 @@ namespace EmployeeLearningTests
         }
 
         [Test]
-        public void EmptyNamePaarameterTest()
+        public void EmptyNameParameterTest()
         {
             Video? video = new(TEST_ID, String.Empty);
             video.Name.Should().Be(String.Empty);
         }
 
+        [Test]
+        public void NullIdParameterTest()
+        {
+            Video? video = new(null, TEST_NAME);
+            video.Id.Should().Be(null);
+        }
         #endregion
     }
 }

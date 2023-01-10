@@ -18,11 +18,6 @@ namespace EmployeeLearningTests
         private static readonly string JOBROLE_EXPECTED_NAME = "CTO";
         #endregion
 
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         #region PRIVATE METHODS
 
         private List<Video> CreateVideos()
@@ -38,9 +33,6 @@ namespace EmployeeLearningTests
         private static void JobRoleInstanceCreatedTest(JobRole jobRole)
         {
             jobRole.Should().NotBeNull();
-            jobRole.Id.Should().NotBe(null);
-            jobRole.Name.Should().NotBeNull();
-            jobRole.LearningPath.Should().NotBeNull();
         }
 
         private static void JobRolePropertiesTest(JobRole jobRole)
@@ -64,12 +56,9 @@ namespace EmployeeLearningTests
             }
         }
 
-        private JobRole CreateJobRole()
+        private JobRole CreateJobRole(Nullable<int> id, string? name)
         {
-            var jobRole = new JobRole();
-            jobRole.Id = JOBROLE_TEST_ID;
-            jobRole.Name = JOBROLE_TEST_NAME;
-            jobRole.LearningPath = CreateVideos();
+            var jobRole = new JobRole(id, name, CreateVideos());
             return jobRole;
         }
 
@@ -79,22 +68,21 @@ namespace EmployeeLearningTests
         [Test]
         public void JobRoleInstanceCreatedTest()
         {
-
-            JobRole jobRole = new();
+            JobRole jobRole = CreateJobRole(null, null);
             jobRole.Should().NotBeNull();
         }
 
         [Test]
         public void JobRoleContentNotNullTest()
         {
-            JobRole jobRole = CreateJobRole();
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
             JobRoleInstanceCreatedTest(jobRole);
         }
 
         [Test]
         public void JobRoleContentTest()
         {
-            JobRole jobRole = CreateJobRole();
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
             JobRoleInstanceCreatedTest(jobRole);
             JobRolePropertiesTest(jobRole);
         }
@@ -103,7 +91,7 @@ namespace EmployeeLearningTests
         [Test]
         public void JobRoleVideosMarkAllAsWatchedTest()
         {
-            JobRole jobRole = CreateJobRole();
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
             jobRole.LearningPath.Should().NotBeNull();
             jobRole.LearningPath.ToList().ForEach(v => v.MarkAsWatched());
             bool isWatched = true;
@@ -114,7 +102,7 @@ namespace EmployeeLearningTests
         [Test]
         public void JobRoleVideosMarkAllAsUnWatchedTest()
         {
-            JobRole jobRole = CreateJobRole();
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
             jobRole.LearningPath.Should().NotBeNull();
             bool isWatched = false;
             jobRole.LearningPath.ToList().ForEach(v => isWatched = isWatched || v.IsWatched);
@@ -122,12 +110,19 @@ namespace EmployeeLearningTests
         }
 
         [Test]
+        public void JobRoleIdNullTest()
+        {
+            JobRole jobRole = CreateJobRole(null, JOBROLE_TEST_NAME);
+            JobRoleInstanceCreatedTest(jobRole);
+            jobRole.Id.Should().Be(null);
+        }
+
+        [Test]
         public void JobRoleEmptyNameTest()
         {
-            JobRole jobRole = CreateJobRole();
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, null);
             JobRoleInstanceCreatedTest(jobRole);
-            jobRole.Name = String.Empty;
-            jobRole.Name.Should().Be(String.Empty);
+            jobRole.Name.Should().Be(null);
         }
         #endregion
     }
