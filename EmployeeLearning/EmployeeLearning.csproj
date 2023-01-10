@@ -8,11 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="factories\**" />
+    <EmbeddedResource Remove="factories\**" />
+    <None Remove="factories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="factories\" />
     <Folder Include="model\videostore\" />
   </ItemGroup>
 

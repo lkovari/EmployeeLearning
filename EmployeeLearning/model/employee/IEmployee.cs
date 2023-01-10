@@ -1,9 +1,5 @@
-﻿using EmployeeLearning.model.jobrole;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmployeeLearning.model.video;
+
 
 namespace EmployeeLearning.model.employee
 {
@@ -11,5 +7,7 @@ namespace EmployeeLearning.model.employee
     {
         public void WatcVideo(int videoId);
         public void MarkAllVideoAsUnWatched();
+        public List<Video> GetWatchedVideos();
+        public Video GetVideoById(int videoId);
     }
 }

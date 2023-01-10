@@ -1,9 +1,10 @@
 using EmployeeLearning.model.video;
 using FluentAssertions;
+using FluentAssertions.Execution;
 
 namespace EmployeeLearningTests
 {
-    public class VideoModelTests
+    public class VideoTests
     {
         #region CONSTANTS
         private static readonly int TEST_ID = 1;
@@ -18,13 +19,13 @@ namespace EmployeeLearningTests
         }
         
         #region PRIVATE METHODS
-        private static void VideoContentNotNullTest(Video video)
+        private static void VideoInstanceNotNullTest(Video video)
         {
             video.Name.Should().NotBeNull();
             video.Id.Should().NotBe(null);
         }
 
-        private static void VideoContentMatchedTest(Video video)
+        private static void VideoPropertiesTest(Video video)
         {
             video.Name.Should().Be(EXPECTED_NAME);
             video.Id.Should().Be(EXPECTED_ID);
@@ -32,7 +33,7 @@ namespace EmployeeLearningTests
         #endregion
 
         [Test]
-        public void TestVideoInstanceCreated()
+        public void VideoInstanceIsCreatedTest()
         {
             Video video = new(TEST_ID, TEST_NAME);
             video.Should().NotBeNull();
@@ -40,25 +41,25 @@ namespace EmployeeLearningTests
 
         #region PUBLIC METHODS
         [Test]
-        public void TestVideoContentNotNull()
-        {
-            TestVideoInstanceCreated();
-            Video video = new(TEST_ID, TEST_NAME);
-            video.Should().NotBeNull();
-            VideoContentNotNullTest(video);
-        }
-
-        [Test]
-        public void TestVideoContentMatched()
+        public void VideoContentNotNullTest()
         {
             Video video = new(TEST_ID, TEST_NAME);
             video.Should().NotBeNull();
-            VideoContentNotNullTest(video);
-            VideoContentMatchedTest(video);
+            VideoInstanceNotNullTest(video);
+            VideoPropertiesTest(video);
         }
 
         [Test]
-        public void TestMarkVideoAsWatched()
+        public void VideoContentValidityTest()
+        {
+            Video video = new(TEST_ID, TEST_NAME);
+            video.Should().NotBeNull();
+            VideoInstanceNotNullTest(video);
+            VideoPropertiesTest(video);
+        }
+
+        [Test]
+        public void MarkVideoAsWatchedTest()
         {
             Video? video = new(TEST_ID, TEST_NAME);
             video.MarkAsWatched();
@@ -66,35 +67,35 @@ namespace EmployeeLearningTests
         }
 
         [Test]
-        public void TestMarkVideoAsUnWatched()
+        public void MarkVideoAsUnwatchedTest()
         {
             Video? video = new(TEST_ID, TEST_NAME);
             video.MarkAsUnWatched();
-            video.IsWatched.Should().Be(false);
+            video.WatchDate.Should().BeNull();
         }
 
         [Test]
-        public void TestMarkVideoLastSeenDateCleared()
-        {
-            Video? video = new(TEST_ID, TEST_NAME);
-            video.MarkAsUnWatched();
-            video.Watched.Should().BeNull();
-        }
-
-        [Test]
-        public void TestVideoSeenDate()
+        public void VideoSeenDateTest()
         {
             Video? video = new(TEST_ID, TEST_NAME);
             video.MarkAsWatched();
-            video.Watched.Should().NotBeNull();
+            video.WatchDate.Should().NotBeNull();
         }
 
         [Test]
-        public void TestVideoInstanceNotCreated()
+        public void InstanceNotCreatedTest()
         {
             Video? video = null;
             video.Should().BeNull();
         }
+
+        [Test]
+        public void EmptyNamePaarameterTest()
+        {
+            Video? video = new(TEST_ID, String.Empty);
+            video.Name.Should().Be(String.Empty);
+        }
+
         #endregion
     }
 }

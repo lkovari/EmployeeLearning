@@ -5,15 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeLearning.model.jobrole
+namespace EmployeeLearning.controller.jobrole
 {
-    public interface IJobRole
+    public interface IJobRoleControler
     {
         public void addVideo(Video video);
         public void removeVideo(int videoId);
-        public Video FindVideoById(int videoId);
-        public void MarkAllAsUnWatched();
-        public List<Video> GetWatchedVideos();
-        public List<Video> GetAllVideos();
     }
 }

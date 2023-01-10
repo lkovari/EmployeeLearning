@@ -1,39 +1,57 @@
 ﻿using EmployeeLearning.model.video;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.model.jobrole
 {
     public class JobRole : IJobRole
     {
-        #region PROPERTIES
-        public int Id { get; }
-        public string Name { get; }
-
-        private readonly List<Video> _learningPath;
-        public List<Video> LearningPath { get { return _learningPath; } }
+        #region CONSTANTS
+        private readonly bool VIDEO_IS_WATCHED = true;
         #endregion
 
-        public JobRole(int id, string name, List<Video> videos)
+        #region PROPERTIES
+        public Int32? Id { get; set; }
+        public string? Name { get; set; }
+
+
+        public List<Video> LearningPath { get; set; }
+        #endregion
+
+        public JobRole()
         {
-            Id = id;
-            Name = name;
-            _learningPath = videos;
+            LearningPath = new List<Video>();
         }
 
         #region PUBLIC METHODS
+
+        public void addVideo(Video video)
+        {
+            LearningPath.Add(video);
+        }
+        public void removeVideo(int videoId)
+        {
+            LearningPath.Remove(FindVideoById(videoId));
+        }
+
         public Video FindVideoById(int videoId)
         {
-            return ((Video)(from video in _learningPath where video.Id == videoId select video));
+            return ((Video)(from video in LearningPath where video.Id == videoId select video));
         }
 
         public void MarkAllAsUnWatched()
         {
-            _learningPath.ForEach(v => v.MarkAsUnWatched());
+            LearningPath.ForEach(v => v.MarkAsUnWatched());
         }
+
+        public List<Video> GetWatchedVideos()
+        {
+            return (List<Video>)LearningPath.Where(v => v.IsWatched == VIDEO_IS_WATCHED);
+        }
+
+        public List<Video> GetAllVideos()
+        {
+            return (List<Video>)LearningPath;
+        }
+
         #endregion
     }
 }
