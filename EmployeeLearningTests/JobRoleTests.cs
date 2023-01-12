@@ -56,33 +56,37 @@ namespace EmployeeLearningTests
             }
         }
 
-        private JobRole CreateJobRole(Nullable<int> id, string? name)
+        private JobRole CreateJobRole(Nullable<int> id, string? name, List<Video>? videos)
         {
-            var jobRole = new JobRole(id, name, CreateVideos());
+            var jobRole = new JobRole(id, name, videos);
             return jobRole;
         }
 
         #endregion
 
-        #region PUBLIC METHODS
+        #region PUBLIC TEST METHODS
         [Test]
         public void JobRoleInstanceCreatedTest()
         {
-            JobRole jobRole = CreateJobRole(null, null);
-            jobRole.Should().NotBeNull();
+            Action action = () =>
+            {
+                JobRole jobRole = CreateJobRole(null, null, CreateVideos());
+                jobRole.Should().NotBeNull();
+            };
+            action.Should().Throw<ArgumentException>();
         }
 
         [Test]
         public void JobRoleContentNotNullTest()
         {
-            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, CreateVideos());
             JobRoleInstanceCreatedTest(jobRole);
         }
 
         [Test]
         public void JobRoleContentTest()
         {
-            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, CreateVideos());
             JobRoleInstanceCreatedTest(jobRole);
             JobRolePropertiesTest(jobRole);
         }
@@ -91,9 +95,9 @@ namespace EmployeeLearningTests
         [Test]
         public void JobRoleVideosMarkAllAsWatchedTest()
         {
-            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, CreateVideos());
             jobRole.LearningPath.Should().NotBeNull();
-            jobRole.LearningPath.ToList().ForEach(v => v.MarkAsWatched());
+            jobRole.LearningPath.ToList().ForEach(v => v.VideoMarkAsWatched());
             bool isWatched = true;
             jobRole.LearningPath.ToList().ForEach(v => isWatched = isWatched && v.IsWatched);
             isWatched.Should().Be(true);
@@ -102,7 +106,7 @@ namespace EmployeeLearningTests
         [Test]
         public void JobRoleVideosMarkAllAsUnWatchedTest()
         {
-            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME);
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, CreateVideos());
             jobRole.LearningPath.Should().NotBeNull();
             bool isWatched = false;
             jobRole.LearningPath.ToList().ForEach(v => isWatched = isWatched || v.IsWatched);
@@ -110,19 +114,53 @@ namespace EmployeeLearningTests
         }
 
         [Test]
-        public void JobRoleIdNullTest()
+        public void JobRoleWithIdNullTest()
         {
-            JobRole jobRole = CreateJobRole(null, JOBROLE_TEST_NAME);
-            JobRoleInstanceCreatedTest(jobRole);
-            jobRole.Id.Should().Be(null);
+            Action action = () =>
+            {
+                JobRole jobRole = CreateJobRole(null, JOBROLE_TEST_NAME, CreateVideos());
+                JobRoleInstanceCreatedTest(jobRole);
+                jobRole.Id.Should().Be(null);
+            };
+            action.Should().Throw<ArgumentException>();
         }
 
         [Test]
-        public void JobRoleEmptyNameTest()
+        public void JobRoleWithEmptyNameTest()
         {
-            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, null);
+            JobRole jobRole = CreateJobRole(JOBROLE_TEST_ID, string.Empty, CreateVideos());
             JobRoleInstanceCreatedTest(jobRole);
-            jobRole.Name.Should().Be(null);
+            jobRole.Name.Should().Be(string.Empty);
+        }
+
+        [Test]
+        public void JobRoleWithNullIdParameterTest()
+        {
+            Action action = () =>
+            {
+                JobRole? jobRole = CreateJobRole(null, JOBROLE_TEST_NAME, CreateVideos());
+            };
+            action.Should().Throw<ArgumentException>();
+        }
+
+        [Test]
+        public void JobRoleWithNullNameParameterTest()
+        {
+            Action action = () =>
+            {
+                JobRole? jobRole = CreateJobRole(JOBROLE_TEST_ID, null, CreateVideos());
+            };
+            action.Should().Throw<ArgumentException>();
+        }
+
+        [Test]
+        public void JobRoleWithNullVideosParameterTest()
+        {
+            Action action = () =>
+            {
+                JobRole? jobRole = CreateJobRole(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, null);
+            };
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
     }

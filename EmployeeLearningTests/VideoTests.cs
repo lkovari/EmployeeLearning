@@ -1,6 +1,8 @@
+using EmployeeLearning.model.employee;
 using EmployeeLearning.model.video;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using FluentAssertions.Numeric;
 
 namespace EmployeeLearningTests
 {
@@ -39,7 +41,7 @@ namespace EmployeeLearningTests
             video.Should().NotBeNull();
         }
 
-        #region PUBLIC METHODS
+        #region PUBLIC TEST METHODS
         [Test]
         public void VideoContentNotNullTest()
         {
@@ -62,7 +64,7 @@ namespace EmployeeLearningTests
         public void MarkVideoAsWatchedTest()
         {
             Video? video = new(TEST_ID, TEST_NAME);
-            video.MarkAsWatched();
+            video.VideoMarkAsWatched();
             video.IsWatched.Should().Be(true);
         }
 
@@ -70,7 +72,7 @@ namespace EmployeeLearningTests
         public void MarkVideoAsUnwatchedTest()
         {
             Video? video = new(TEST_ID, TEST_NAME);
-            video.MarkAsUnWatched();
+            video.VideoMarkAsUnWatched();
             video.WatchDate.Should().BeNull();
         }
 
@@ -78,7 +80,7 @@ namespace EmployeeLearningTests
         public void VideoSeenDateTest()
         {
             Video? video = new(TEST_ID, TEST_NAME);
-            video.MarkAsWatched();
+            video.VideoMarkAsWatched();
             video.WatchDate.Should().NotBeNull();
         }
 
@@ -99,8 +101,20 @@ namespace EmployeeLearningTests
         [Test]
         public void NullIdParameterTest()
         {
-            Video? video = new(null, TEST_NAME);
-            video.Id.Should().Be(null);
+            Action action = () =>
+            {
+                Video? video = new(null, TEST_NAME);
+            };
+            action.Should().Throw<ArgumentException>();
+        }
+        [Test]
+        public void NullNameParameterTest()
+        {
+            Action action = () =>
+            {
+                Video? video = new(TEST_ID, null);
+            };
+            action.Should().Throw<ArgumentException>();
         }
         #endregion
     }

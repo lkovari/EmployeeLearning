@@ -3,7 +3,7 @@ namespace EmployeeLearning.model.video
 {
     public interface IVideo
     {
-        public void MarkAsWatched();
-        public void MarkAsUnWatched();
+        public void VideoMarkAsWatched();
+        public void VideoMarkAsUnWatched();
     }
 }

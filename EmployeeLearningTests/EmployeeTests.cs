@@ -5,6 +5,7 @@ using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,8 +16,7 @@ namespace EmployeeLearningTests
         #region CONSTANTS
         private static readonly int EMPLOYEE_MIN_ID = -1;
         private static readonly int EMPLOYEE_ID = 0;
-        private static readonly string EMPLOYEE_LAST_NAME = "John";
-        private static readonly string EMPLOYEE_FIRST_NAME = "Doe";
+        private static readonly string EMPLOYEE_NAME = "John Doe";
         private static readonly int VIDEO_COUNT_FOR_TEST = 5;
         private static readonly int VIDEO_TEST_ID = 1;
         private static readonly string VIDEO_TEST_NAME = "Ethics";
@@ -24,8 +24,13 @@ namespace EmployeeLearningTests
         private static readonly string JOBROLE_TEST_NAME = "CTO";
         private static readonly int TWO_TIMES_WATCHED = 2;
         private static readonly int ONE_VIDEO_WATCHER = 1;
+
+        public static readonly int EXPECTED_VALUE_ZERO = 0;
+        public static readonly int EXPECTED_VALUE_1 = 1;
+        public static readonly int EXPECTED_VALUE_2 = 2;
         #endregion
 
+        #region PRIVATE FUNCTIONS
         private JobRole CreateJobRole()
         {
             List<Video> videos = new();
@@ -36,31 +41,33 @@ namespace EmployeeLearningTests
             return new(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, videos);
         }
 
-        private Employee CreateEmployee()
-        {
-            return new Employee(EMPLOYEE_ID, EMPLOYEE_LAST_NAME, EMPLOYEE_FIRST_NAME, CreateJobRole());
-        }
 
+        private Employee CreateEmployee(Nullable<int> id, string? name, JobRole? jobRole)
+        {
+             return new Employee(id, name, jobRole);
+        }
+        #endregion
+
+        #region PUBLIC TEST METHODS
         [Test]
         public void EmployeeInstanceCreatedTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
         }
 
         [Test]
         public void EmployeeNameTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
-            employee.LastName.Should().NotBeNull();
-            employee.FirstName.Should().NotBeNull();
+            employee.Name.Should().NotBeNull();
         }
 
         [Test]
         public void EmployeeIdTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.Id.Should().BeGreaterThan(EMPLOYEE_MIN_ID);
         }
@@ -68,7 +75,7 @@ namespace EmployeeLearningTests
         [Test]
         public void EmployeeJobRoleTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.JobRole.Should().NotBeNull();
         }
@@ -76,7 +83,7 @@ namespace EmployeeLearningTests
         [Test]
         public void EmployeeJobRoleVideoExistsTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.JobRole.Should().NotBeNull();
             employee.JobRole.LearningPath.Should().NotBeNull();
@@ -86,23 +93,23 @@ namespace EmployeeLearningTests
         [Test]
         public void EmployeeJobRoleVideoWatchedTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.JobRole.Should().NotBeNull();
             employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
             employee.JobRole.LearningPath.ElementAt(0).IsWatched.Should().BeTrue();
         }
 
         [Test]
         public void EmployeeJobRoleVideoUnWatchedTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.JobRole.Should().NotBeNull();
             employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsUnWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsUnWatched();
             employee.JobRole.LearningPath.ElementAt(0).IsWatched.Should().BeFalse();
         }
 
@@ -110,12 +117,12 @@ namespace EmployeeLearningTests
         [Test]
         public void EmployeeJobRoleVideoHitCountTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.JobRole.Should().NotBeNull();
             employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
             employee.JobRole.LearningPath.ElementAt(0).HitCount.Should().BeGreaterThanOrEqualTo(TWO_TIMES_WATCHED);
             employee.GetWatchedVideos().Should().NotBeNull();
             employee.GetWatchedVideos().Count.Should().BeGreaterThanOrEqualTo(ONE_VIDEO_WATCHER);
@@ -125,16 +132,45 @@ namespace EmployeeLearningTests
         [Test]
         public void EmployeeJobRoleVideoHitCountClearTest()
         {
-            Employee employee = CreateEmployee();
+            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
             employee.Should().NotBeNull();
             employee.JobRole.Should().NotBeNull();
             employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).MarkAsUnWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
+            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsUnWatched();
             employee.GetWatchedVideos().Should().NotBeNull();
-            employee.GetWatchedVideos().Count.Should().Be(0);
+            employee.GetWatchedVideos().Count.Should().Be(EXPECTED_VALUE_ZERO);
         }
 
+        [Test]
+        public void EmployeeNullIdParameterTest()
+        {
+            Action action = () =>
+            {
+                Employee? employee = CreateEmployee(null, EMPLOYEE_NAME, CreateJobRole());
+            };
+            action.Should().Throw<ArgumentException>();
+        }
+        [Test]
+        public void EmployeeNullNameParameterTest()
+        {
+            Action action = () =>
+            {
+                Employee? employee = CreateEmployee(EMPLOYEE_ID, null, CreateJobRole());
+            };
+            action.Should().Throw<ArgumentException>();
+        }
+
+        [Test]
+        public void EmployeeNullJobRoleParameterTest()
+        {
+            Action action = () =>
+            {
+                Employee? employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, null);
+            };
+            action.Should().Throw<ArgumentException>();
+        }
+        #endregion
     }
 }

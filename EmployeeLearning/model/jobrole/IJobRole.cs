@@ -9,11 +9,9 @@ namespace EmployeeLearning.model.jobrole
 {
     public interface IJobRole
     {
-        public void addVideo(Video video);
-        public void removeVideo(int videoId);
-        public Video FindVideoById(int videoId);
-        public void MarkAllAsUnWatched();
-        public List<Video> GetWatchedVideos();
-        public List<Video> GetAllVideos();
+        public void AssignVideoToJobRole(Video video);
+        public void UnassignedVideoFromJobRole(int videoId);
+        public Video FindVideoByIdOfJobRole(int videoId);
+        public List<Video> GetAssignedVideosOfJobRole();
     }
 }

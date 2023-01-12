@@ -2,67 +2,54 @@
 
 namespace EmployeeLearning.model.jobrole
 {
-    public class JobRole : IJobRole
+    public class JobRole : BaseModel, IJobRole
     {
-        #region CONSTANTS
-        private readonly bool VIDEO_IS_WATCHED = true;
-        #endregion
 
         #region PROPERTIES
-        public Nullable<int> Id { get; }
-        public string? Name { get; }
         public List<Video> LearningPath { get; }
         #endregion
 
-        public JobRole(Nullable<int> id, string? name, List<Video> videos)
+        public JobRole(Nullable<int> id, string? name, List<Video>? videos) : base(id, name)
         {
-            Id = id;
-            Name = name;
-            LearningPath = videos;
+            if (videos == null)
+            {
+                throw new ArgumentException(string.Format("Parameter {{0}}", videos));
+            }
+            else
+            {
+                LearningPath = videos;
+            }
         }
 
         #region PUBLIC METHODS
 
-        public void addVideo(Video video)
+        public void AssignVideoToJobRole(Video video)
         {
             if (LearningPath.IndexOf(video) < 0)
             {
                 LearningPath.Add(video);
             } else
             {
-                // Nothing to do; 
+                throw new Exception("AddVideo: Video already exists!");
             }
         }
 
-        public void removeVideo(int videoId)
+        public void UnassignedVideoFromJobRole(int videoId)
         {
-            LearningPath.Remove(FindVideoById(videoId));
+            LearningPath.Remove(FindVideoByIdOfJobRole(videoId));
         }
 
-        public Video FindVideoById(int videoId)
+        public Video FindVideoByIdOfJobRole(int videoId)
         {
             return ((Video)(from video in LearningPath where video.Id == videoId select video));
         }
 
-        public void MarkAllAsUnWatched()
+        public void ResetVideoWatches()
         {
-            LearningPath.ForEach(v => v.MarkAsUnWatched());
+            LearningPath.ForEach(v => v.VideoMarkAsUnWatched());
         }
 
-        public List<Video> GetWatchedVideos()
-        {
-            var watchedVideos = new List<Video>();
-            foreach (Video video in LearningPath)
-            {
-                if (video.IsWatched == VIDEO_IS_WATCHED)
-                {
-                    watchedVideos.Add(video);
-                } 
-            }
-            return watchedVideos;
-        }
-
-        public List<Video> GetAllVideos()
+        public List<Video> GetAssignedVideosOfJobRole()
         {
             return (List<Video>)LearningPath;
         }

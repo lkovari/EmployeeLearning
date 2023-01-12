@@ -1,14 +1,14 @@
 ﻿
 
+using System.Runtime.Serialization;
+using System;
+using System.Transactions;
+
 namespace EmployeeLearning.model.video
 {
-    public class Video : IVideo
+    public class Video : BaseModel, IVideo
     {
         #region PROPERTIES
-        public Nullable<int> Id { get; }
-        
-        public string Name { get; }
-
         private bool _isWatched;
         public bool IsWatched { get { return _isWatched; } }
         
@@ -17,12 +17,12 @@ namespace EmployeeLearning.model.video
 
         private int _hitCount = 0;
         public int HitCount { get { return _hitCount; } }
+        public int Completed { get; }
+        public int DurationInMins { get; }
         #endregion
 
-        public Video(Nullable<int> id, string name)
+        public Video(Nullable<int> id, string? name) : base(id, name)
         {
-            Id = id;
-            Name = name;
         }
 
         #region PRIVATE METHOD
@@ -59,14 +59,14 @@ namespace EmployeeLearning.model.video
         #endregion
 
         #region PUBLIC METHODS
-        public void MarkAsWatched()
+        public void VideoMarkAsWatched()
         {
             SetupIsWatched();
             SetupWatchDate();
             IncrementHitCount();
         }
 
-        public void MarkAsUnWatched()
+        public void VideoMarkAsUnWatched()
         {
             CleanIsWatched();
             CleanWatchDate();
