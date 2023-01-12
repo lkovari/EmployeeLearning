@@ -3,49 +3,61 @@ using EmployeeLearning.model.video;
 
 namespace EmployeeLearning.model.employee
 {
-    public class Employee : IEmployee
+    public class Employee : BaseModel, IEmployee
     {
-        #region PROPERTIES
-        private Nullable<int> _id;
-        public Nullable<int> Id { get { return _id; } }
-        
-        private string? _lastName;
-        public string LastName { get { return _lastName; } }
-
-        private string? _firstName;
-        public string? FirstName { get { return _firstName; } }
-
-        private JobRole _jobRole;
-        public JobRole JobRole { get { return _jobRole; } }
+        #region CONSTANTS
+        private readonly bool VIDEO_IS_WATCHED = true;
         #endregion
 
-        public Employee(Nullable<int> id, string? lastName, string? firstName, JobRole jobRole)
+        #region PROPERTIES
+        private JobRole _jobRole;
+        public JobRole JobRole { get { return _jobRole; } }
+        public bool IsAuthenticated { get; set; }
+        #endregion
+
+        public Employee(Nullable<int> id, string? name, JobRole? jobRole) : base(id, name)
         {
-            _id = id;
-            _lastName = lastName;
-            _firstName = firstName;
-            _jobRole = jobRole;
+            if (jobRole == null)
+            {
+                throw new ArgumentException(string.Format("Parameter {{0}}", jobRole));
+            } else
+            {
+                _jobRole = jobRole;
+            }
         }
 
         #region PUBLIC METHODS
-        public void WatcVideo(int videoId)
+        public void WatchAVideo(int videoId)
         {
-            JobRole.FindVideoById(videoId).MarkAsWatched();
+            JobRole.FindVideoByIdOfJobRole(videoId).VideoMarkAsWatched();
         }
 
-        public void MarkAllVideoAsUnWatched()
+        public void ResetVideoWatches()
         {
-            JobRole.MarkAllAsUnWatched();
+            JobRole.ResetVideoWatches();
         }
 
         public List<Video> GetWatchedVideos()
         {
-            return JobRole.GetWatchedVideos();
+            var watchedVideos = new List<Video>();
+            foreach (Video video in _jobRole.LearningPath)
+            {
+                if (video.IsWatched == VIDEO_IS_WATCHED)
+                {
+                    watchedVideos.Add(video);
+                }
+            }
+            return watchedVideos;
         }
 
         public Video GetVideoById(int videoId)
         {
-            return JobRole.FindVideoById(videoId);
+            return JobRole.FindVideoByIdOfJobRole(videoId);
+        }
+
+        public List<Video> GetAssignedVideos()
+        {
+            return JobRole.GetAssignedVideosOfJobRole();
         }
         #endregion
     }
