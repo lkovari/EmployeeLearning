@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace EmployeeLearning.model
 {
-    public class BaseModel
+    public class BaseModel : ICloneable
     {
         #region PROPERTIES
         private readonly Guid _id;
         public Guid Id { get { return _id; } }
 
         [Required]
-        public string Name { get; }
+        public string Name { get; set; }
         #endregion
 
         #region CONSTRUCTOR
@@ -29,6 +29,11 @@ namespace EmployeeLearning.model
             {
                 Name = name;
             }
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
         #endregion
     }

@@ -18,10 +18,9 @@ namespace EmployeeLearningTests
     {
         #region CONSTANTS
         private readonly int EMPLOYE_COUNT_ZERO = 0;
+        private readonly int EMPLOYE_INDEX_0 = 0;
         private readonly int JOBROLE_INDEX = 1;
-
-        private readonly string EXPECTED_EXCEPTION_MESSAGE_OF_FIND =
-            "GetEmployeeById: Employee Not Found by Id!";
+        private readonly string EMPLOYEE_NEW_NAME = "John Carmac";
         #endregion
 
         private EmployeesDataHandler employeesDataHandler;
@@ -79,7 +78,22 @@ namespace EmployeeLearningTests
             employeesDataHandler.AddEmployees(employeesToAdd);
             int employeesCountAfterAdd = employeesDataHandler.GetAllEmployees().Count;
             employeesCountAfterAdd.Should().Be(employeCoundBeforeAdd + 2);
-            employeesToAdd = null;
+        }
+
+        [Test]
+        public void EmployeesDataHandlerModifyEmployeesTest()
+        {
+            employeesDataHandler.Should().NotBeNull();
+            employeesDataHandler.GetAllEmployees().Should().NotBeNull();
+            employeesDataHandler.GetAllEmployees().Count.Should().BeGreaterThan(EMPLOYE_COUNT_ZERO);
+            Employee employeToModify = employeesDataHandler.GetAllEmployees()[EMPLOYE_INDEX_0];
+            Employee clonedEmloyee = (Employee)employeToModify.Clone();
+            clonedEmloyee.Should().NotBeNull();
+            clonedEmloyee.Name = EMPLOYEE_NEW_NAME;
+            employeesDataHandler.ModifyEmployee(clonedEmloyee);
+            Employee modifiedEmployee = employeesDataHandler.GetEmployeeById(employeToModify.Id);
+            modifiedEmployee.Should().NotBeNull();
+            modifiedEmployee.Name.Should().BeSameAs(EMPLOYEE_NEW_NAME); 
         }
         #endregion
     }
