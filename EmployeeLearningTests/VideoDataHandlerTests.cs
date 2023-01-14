@@ -7,7 +7,7 @@ using FluentAssertions.Numeric;
 
 namespace EmployeeLearningTests
 {
-    public class VideoTests
+    public class VideoDataHandlerTests
     {
         #region CONSTANTS
         private static readonly string TEST_NAME = "Ethics";

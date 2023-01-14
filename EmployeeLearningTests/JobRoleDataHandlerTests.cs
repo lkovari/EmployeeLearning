@@ -6,7 +6,7 @@ using FluentAssertions;
 
 namespace EmployeeLearningTests
 {
-    public class JobRoleTests
+    public class JobRoleDataHandlerTests
     {
         #region CONSTANTS
         private static readonly int JOBROLE_TEST_DATA_INDEX = 0;

@@ -10,7 +10,7 @@ using FluentAssertions;
 
 namespace EmployeeLearningTests
 {
-    public class EmployeeTests
+    public class EmployeeDataHandlerTests
     {
         #region CONSTANTS
         private readonly int EMPLOYEE_TEST_DATA_INDEX = 0;

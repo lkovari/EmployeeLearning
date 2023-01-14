@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeLearningTests
 {
-    public class EmployeesTest
+    public class EmployeesDataHandlerTest
     {
         #region CONSTANTS
         private readonly int EMPLOYE_COUNT_ZERO = 0;
