@@ -3,74 +3,29 @@
 using System.Runtime.Serialization;
 using System;
 using System.Transactions;
+using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeLearning.model.video
 {
-    public class Video : BaseModel, IVideo
+    public class Video : BaseModel
     {
         #region PROPERTIES
-        private bool _isWatched;
-        public bool IsWatched { get { return _isWatched; } }
-        
-        private DateTime? _watchDate = null;
-        public DateTime? WatchDate { get { return _watchDate; } }
+        public bool IsWatched { get; set; }
+        public DateTime? WatchDate { get; set; }
 
-        private int _hitCount = 0;
-        public int HitCount { get { return _hitCount; } }
-        public int Completed { get; }
-        public int DurationInMins { get; }
+        public int WatchCount { get; set; }
+        public int Completed { get; set; }
+        public int DurationInMins { get; set; }
         #endregion
 
-        public Video(Nullable<int> id, string? name) : base(id, name)
+        #region CONSTRUCTOR
+        public Video(string? name) : base(name)
         {
-        }
-
-        #region PRIVATE METHOD
-
-        private void SetupIsWatched()
-        {
-            _isWatched = true;
-        }
-
-        private void SetupWatchDate()
-        {
-            _watchDate = DateTime.Now;
-        }
-
-        private void IncrementHitCount()
-        {
-            _hitCount++;
-        }
-
-        private void CleanIsWatched()
-        {
-            _isWatched = false;
-        }
-
-        private void CleanWatchDate()
-        {
-            _watchDate = null;
-        }
-
-        private void CleanHitCount()
-        {
-            _hitCount = 0;
-        }
-        #endregion
-
-        #region PUBLIC METHODS
-        public void VideoMarkAsWatched()
-        {
-            SetupIsWatched();
-            SetupWatchDate();
-            IncrementHitCount();
-        }
-
-        public void VideoMarkAsUnWatched()
-        {
-            CleanIsWatched();
-            CleanWatchDate();
-            CleanHitCount();
+            IsWatched = false;
+            WatchDate = null;
+            WatchCount = 0;
+            Completed = 0;
+            DurationInMins = 0;
         }
         #endregion
     }

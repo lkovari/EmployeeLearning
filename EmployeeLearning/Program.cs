@@ -1,8 +1,8 @@
 ﻿
 using EmployeeLearning.adapters.assignedvideos;
 using EmployeeLearning.adapters.watchhistory;
-using EmployeeLearning.controller.employee;
-using EmployeeLearning.controller.employees;
+using EmployeeLearning.datahandler.employee;
+using EmployeeLearning.datahandler.employees;
 using EmployeeLearning.model.employee;
 
 namespace EmployeeLearning
@@ -11,15 +11,15 @@ namespace EmployeeLearning
     {
         static void Main(string[] args)
         {
-            EmployeesController employeesController = new EmployeesController();
+            EmployeesDataHandler employeesController = new EmployeesDataHandler();
             Employee employee = employeesController.GetAllEmployees()[0];
 
-            EmployeeController employeeController = 
-                new EmployeeController(employee,
+            EmployeeDataHandler employeeController = 
+                new EmployeeDataHandler(employee,
                     new DisplayAssignedVideosConsoleAdapter(),
                     new DisplayHistoryOfWatchedVideosConsoleAdapter()
                 );
-            employeeController.DisplayJobRoleBasedAssignedVideos();
+            employeeController.DisplayAssignedVideos();
             employeeController.GetAssignedVideos().ForEach(video => {
                 employeeController.WatchingAVideo(video.Id);
                 employeeController.WatchingAVideo(video.Id);

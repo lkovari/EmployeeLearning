@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmployeeLearning.adapters.displaymodel;
 
 namespace EmployeeLearning.adapters.watchhistory
 {
     public interface IDisplayHistoryOfWatchedVideos
     {
-        void DisplayHistory(string text);
+        void DisplayHistory(AdapterModel model);
     }
 }

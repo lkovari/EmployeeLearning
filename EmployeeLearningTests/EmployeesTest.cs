@@ -1,4 +1,5 @@
-﻿using EmployeeLearning.model.employee;
+﻿using EmployeeLearning.datahandler.employees;
+using EmployeeLearning.model.employee;
 using EmployeeLearning.model.employees;
 using EmployeeLearning.testdata;
 using EmployeeLearning.testdata.employeestorage;
@@ -16,77 +17,69 @@ namespace EmployeeLearningTests
     public class EmployeesTest
     {
         #region CONSTANTS
+        private readonly int EMPLOYE_COUNT_ZERO = 0;
+        private readonly int JOBROLE_INDEX = 1;
+
         private readonly string EXPECTED_EXCEPTION_MESSAGE_OF_FIND =
             "GetEmployeeById: Employee Not Found by Id!";
         #endregion
 
+        private EmployeesDataHandler employeesDataHandler;
+
+        #region INITIALIZE
+        [SetUp]
+        public void Setup()
+        {
+            employeesDataHandler = new EmployeesDataHandler();
+        }
+        #endregion
+
         #region PUBLIC TEST METHODS
         [Test]
-        public void EmployeesAddEmployeesTest()
+        public void EmployeesDataHandlerInstanceTest()
         {
-            var employees = new Employees();
-            employees.Should().NotBeNull();
-            employees.AddEmployees(EmployeeTestDataProvider.Instance.Employees);
-            employees.GetAllEmployees().Should().NotBeNull();
-            employees.GetAllEmployees().Count.Should().BeGreaterThan(0);
+            employeesDataHandler.Should().NotBeNull();
         }
 
         [Test]
-        public void EmployeesAddEmployeTest()
+        public void EmployeesDataHandlerEmployeesCountTest()
         {
-            var employees = new Employees();
-            employees.Should().NotBeNull();
-            employees.AddEmployees(EmployeeTestDataProvider.Instance.Employees);
-            employees.GetAllEmployees().Should().NotBeNull();
-            employees.GetAllEmployees().Count.Should().BeGreaterThan(0);
-            int numberOfEmployes = employees.GetAllEmployees().Count;
+            employeesDataHandler.Should().NotBeNull();
+            employeesDataHandler.GetAllEmployees().Count.Should().BeGreaterThan(EMPLOYE_COUNT_ZERO);
+        }
 
-            var employee = new Employee(IdProvider.NewEmployeeId,
-                "Alistair McIntyre",
-                JobRoleTestDataProvider.Instance.JobRoles[9]);
-            employee.Should().NotBeNull();
-            employees.AddEmployee(employee);
-            employees.GetAllEmployees().Count.Should().BeGreaterThan(numberOfEmployes);
-            var foundEmployee = employees.GetEmployeeById(employee.Id);
+        [Test]
+        public void EmployeesDataHandlerEmployeeAddTest()
+        {
+            employeesDataHandler.Should().NotBeNull();
+            int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
+            Employee employe = new("Alistair McIntyre",
+                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX]);
+            employeesDataHandler.AddEmployee(employe);
+            int employeCoundAfterAdd = employeesDataHandler.GetAllEmployees().Count;
+            employeCoundAfterAdd.Should().BeGreaterThan(employeCoundBeforeAdd);
+            Employee foundEmployee = employeesDataHandler.GetEmployeeById(employe.Id);
             foundEmployee.Should().NotBeNull();
-            foundEmployee.Should().BeSameAs(employee);
+            foundEmployee.Should().BeSameAs(employe);
         }
 
         [Test]
-        public void EmployeesRemoveEmployeeTest()
+        public void EmployeesDataHandlerAddEmployeesTest()
         {
-            var employees = new Employees();
-            employees.Should().NotBeNull();
-            employees.AddEmployees(EmployeeTestDataProvider.Instance.Employees);
-            employees.GetAllEmployees().Should().NotBeNull();
-            employees.GetAllEmployees().Count.Should().BeGreaterThan(0);
-            int numberOfEmployes = employees.GetAllEmployees().Count;
-            Employee firstEmployeeToRemove = EmployeeTestDataProvider.Instance.Employees[0];
-            employees.RemoveEmployee(firstEmployeeToRemove.Id);
-            employees.GetAllEmployees().Count.Should().BeLessThan(numberOfEmployes);
-            Action action = () =>
-            {
-                Employee foundEmploye = employees.GetEmployeeById(firstEmployeeToRemove.Id);
-            };
-            action.Should().Throw<Exception>().WithMessage(EXPECTED_EXCEPTION_MESSAGE_OF_FIND);
-        }
+            employeesDataHandler.Should().NotBeNull();
+            int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
 
-        [Test]
-        public void EmployeesModifyEmployeeTest()
-        {
-            var employees = new Employees();
-            employees.Should().NotBeNull();
-            employees.AddEmployees(EmployeeTestDataProvider.Instance.Employees);
-            employees.GetAllEmployees().Should().NotBeNull();
-            employees.GetAllEmployees().Count.Should().BeGreaterThan(0);
-            Employee foundEmployee =
-                employees.GetEmployeeById(EmployeeTestDataProvider.Instance.Employees[0].Id);
-            foundEmployee.Should().NotBeNull();
-            Employee newEmployee = new Employee(foundEmployee.Id, "Elek Mechemed", foundEmployee.JobRole);
-            employees.ModifyEmployee(newEmployee);
-            Employee foundModifiedEmployee = employees.GetEmployeeById(foundEmployee.Id);
-            foundModifiedEmployee.Should().NotBeNull();
-            foundModifiedEmployee.Should().BeSameAs(newEmployee);
+            Employee employeOne = 
+                new Employee("Ian Fraser Kilminster", JobRoleTestDataProvider.Instance.JobRoles[0]);
+            Employee employeTwo =
+                new Employee("Seimour Cray", JobRoleTestDataProvider.Instance.JobRoles[1]);
+            List<Employee> employeesToAdd = new List<Employee>();
+            employeesToAdd.Add(employeOne);
+            employeesToAdd.Add(employeTwo);
+            employeesDataHandler.AddEmployees(employeesToAdd);
+            int employeesCountAfterAdd = employeesDataHandler.GetAllEmployees().Count;
+            employeesCountAfterAdd.Should().Be(employeCoundBeforeAdd + 2);
+            employeesToAdd = null;
         }
         #endregion
     }

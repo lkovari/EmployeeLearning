@@ -1,176 +1,141 @@
-﻿using EmployeeLearning.model.employee;
+﻿using EmployeeLearning.adapters.assignedvideos;
+using EmployeeLearning.adapters.watchhistory;
+using EmployeeLearning.datahandler.employee;
+using EmployeeLearning.model.employee;
 using EmployeeLearning.model.jobrole;
 using EmployeeLearning.model.video;
+using EmployeeLearning.testdata.employeestorage;
+using EmployeeLearning.testdata.idprovider;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearningTests
 {
     public class EmployeeTests
     {
         #region CONSTANTS
-        private static readonly int EMPLOYEE_MIN_ID = -1;
-        private static readonly int EMPLOYEE_ID = 0;
-        private static readonly string EMPLOYEE_NAME = "John Doe";
-        private static readonly int VIDEO_COUNT_FOR_TEST = 5;
-        private static readonly int VIDEO_TEST_ID = 1;
-        private static readonly string VIDEO_TEST_NAME = "Ethics";
-        private static readonly int JOBROLE_TEST_ID = 1;
-        private static readonly string JOBROLE_TEST_NAME = "CTO";
-        private static readonly int TWO_TIMES_WATCHED = 2;
-        private static readonly int ONE_VIDEO_WATCHER = 1;
-
-        public static readonly int EXPECTED_VALUE_ZERO = 0;
-        public static readonly int EXPECTED_VALUE_1 = 1;
-        public static readonly int EXPECTED_VALUE_2 = 2;
+        private readonly int EMPLOYEE_TEST_DATA_INDEX = 0;
+        private readonly int EMPLOYEE_JOBROLE_LERNINGPATH_ZERO_COUNT = 0;
+        private readonly int EMPLOYEE_ASSIGNED_VIDEO_INDEX = 0;
+        private readonly int VIDEO_WATCHED_0_TIMES = 0;
+        private readonly int VIDEO_WATCHED_1_TIMES = 1;
+        private readonly int VIDEO_WATCHED_2_TIMES = 2;
+        private readonly int WATCHED_VIDEO_COUNT_ONE = 1;
         #endregion
 
-        #region PRIVATE FUNCTIONS
-        private JobRole CreateJobRole()
-        {
-            List<Video> videos = new();
-            for (int ix = 0; ix < VIDEO_COUNT_FOR_TEST; ix++)
-            {
-                videos.Add(new Video(VIDEO_TEST_ID + ix, VIDEO_TEST_NAME + ix));
-            }
-            return new(JOBROLE_TEST_ID, JOBROLE_TEST_NAME, videos);
-        }
+        private EmployeeDataHandler employeeDataHandler;
 
-
-        private Employee CreateEmployee(Nullable<int> id, string? name, JobRole? jobRole)
+        #region INITIALIZE
+        [SetUp]
+        public void Setup()
         {
-             return new Employee(id, name, jobRole);
+            employeeDataHandler =
+                new EmployeeDataHandler(EmployeeTestDataProvider.
+                    Instance.Employees[EMPLOYEE_TEST_DATA_INDEX],
+                    new DisplayAssignedVideosConsoleAdapter(),
+                    new DisplayHistoryOfWatchedVideosConsoleAdapter()
+                );
         }
         #endregion
 
         #region PUBLIC TEST METHODS
         [Test]
-        public void EmployeeInstanceCreatedTest()
+        public void EmployeeDataHandlerInstanceTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
+            employeeDataHandler.Should().NotBeNull();
         }
 
         [Test]
-        public void EmployeeNameTest()
+        public void EmployeeDataHandlerEmployeInstanceTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.Name.Should().NotBeNull();
+            employeeDataHandler.Employee.Should().NotBeNull();
         }
 
         [Test]
-        public void EmployeeIdTest()
+        public void EmployeeEmployeJobRoleInstanceTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.Id.Should().BeGreaterThan(EMPLOYEE_MIN_ID);
+            employeeDataHandler.Employee.JobRole.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRole.Id.Should().NotBeEmpty();
+            employeeDataHandler.Employee.JobRole.Name.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRole.LearningPath.Should().NotBeNull();
         }
 
         [Test]
-        public void EmployeeJobRoleTest()
+        public void EmployeeEmployeJobRoleTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.JobRole.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRole.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRole.Id.Should().NotBeEmpty();
+            employeeDataHandler.Employee.JobRole.Name.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRole.LearningPath.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRole.LearningPath.Count.Should().
+                BeGreaterThan(EMPLOYEE_JOBROLE_LERNINGPATH_ZERO_COUNT);
         }
 
         [Test]
-        public void EmployeeJobRoleVideoExistsTest()
+        public void EmployeeWatchAVideoTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.JobRole.Should().NotBeNull();
-            employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.Count.Should().BeGreaterThan(0);
+            Video interestedVideo = 
+                employeeDataHandler.GetAssignedVideos()[EMPLOYEE_ASSIGNED_VIDEO_INDEX];
+            interestedVideo.Should().NotBeNull();
+            employeeDataHandler.WatchingAVideo(interestedVideo.Id);
+            interestedVideo.IsWatched.Should().BeTrue();
+            interestedVideo.WatchDate.Should().NotBeNull();
+            interestedVideo.WatchCount.Should().BeGreaterThan(VIDEO_WATCHED_0_TIMES);
         }
 
         [Test]
-        public void EmployeeJobRoleVideoWatchedTest()
+        public void EmployeeWatchAVideoWatchCountTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.JobRole.Should().NotBeNull();
-            employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).IsWatched.Should().BeTrue();
+            employeeDataHandler.ResetVideoWatches();
+            Video interestedVideo =
+                employeeDataHandler.GetAssignedVideos()[EMPLOYEE_ASSIGNED_VIDEO_INDEX];
+            interestedVideo.Should().NotBeNull();
+            interestedVideo.WatchCount.Should().Be(VIDEO_WATCHED_0_TIMES);
+            employeeDataHandler.WatchingAVideo(interestedVideo.Id);
+            employeeDataHandler.WatchingAVideo(interestedVideo.Id);
+            interestedVideo.IsWatched.Should().BeTrue();
+            interestedVideo.WatchDate.Should().NotBeNull();
+            interestedVideo.WatchCount.Should().Be(VIDEO_WATCHED_2_TIMES);
+            employeeDataHandler.GetWatchedVideos().Count.Should().Be(WATCHED_VIDEO_COUNT_ONE);
         }
 
         [Test]
-        public void EmployeeJobRoleVideoUnWatchedTest()
+        public void EmployeeResetWatchAVideoWatchCountTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.JobRole.Should().NotBeNull();
-            employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsUnWatched();
-            employee.JobRole.LearningPath.ElementAt(0).IsWatched.Should().BeFalse();
-        }
-
-
-        [Test]
-        public void EmployeeJobRoleVideoHitCountTest()
-        {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.JobRole.Should().NotBeNull();
-            employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).HitCount.Should().BeGreaterThanOrEqualTo(TWO_TIMES_WATCHED);
-            employee.GetWatchedVideos().Should().NotBeNull();
-            employee.GetWatchedVideos().Count.Should().BeGreaterThanOrEqualTo(ONE_VIDEO_WATCHER);
-
+            Video interestedVideo =
+                employeeDataHandler.GetAssignedVideos()[EMPLOYEE_ASSIGNED_VIDEO_INDEX];
+            interestedVideo.Should().NotBeNull();
+            employeeDataHandler.GetWatchedVideos().Count.Should().Be(VIDEO_WATCHED_0_TIMES);
+            employeeDataHandler.WatchingAVideo(interestedVideo.Id);
+            employeeDataHandler.GetWatchedVideos().Count.Should().Be(VIDEO_WATCHED_1_TIMES);
+            employeeDataHandler.WatchingAVideo(interestedVideo.Id);
+            interestedVideo.IsWatched.Should().BeTrue();
+            interestedVideo.WatchDate.Should().NotBeNull();
+            interestedVideo.WatchCount.Should().Be(VIDEO_WATCHED_2_TIMES);
+            employeeDataHandler.ResetVideoWatches();
+            employeeDataHandler.GetWatchedVideos().Count.Should().Be(VIDEO_WATCHED_0_TIMES);
         }
 
         [Test]
-        public void EmployeeJobRoleVideoHitCountClearTest()
+        public void EmployeeGetAssignedVideoByIdTest()
         {
-            Employee employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, CreateJobRole());
-            employee.Should().NotBeNull();
-            employee.JobRole.Should().NotBeNull();
-            employee.JobRole.LearningPath.Should().NotBeNull();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsWatched();
-            employee.JobRole.LearningPath.ElementAt(0).VideoMarkAsUnWatched();
-            employee.GetWatchedVideos().Should().NotBeNull();
-            employee.GetWatchedVideos().Count.Should().Be(EXPECTED_VALUE_ZERO);
+            Video interestedVideo =
+                employeeDataHandler.GetAssignedVideos()[EMPLOYEE_ASSIGNED_VIDEO_INDEX];
+            Video foundInterestedVideo = employeeDataHandler.GetAssignedVideoById(interestedVideo.Id);
+            foundInterestedVideo.Should().NotBeNull();
+            foundInterestedVideo.Should().BeSameAs(interestedVideo);
         }
 
         [Test]
-        public void EmployeeNullIdParameterTest()
+        public void EmployeeGetAssignedVideoByIdNotFoundTest()
         {
+            Guid dummyVideoId = IdProvider.Instance.NewId;
             Action action = () =>
             {
-                Employee? employee = CreateEmployee(null, EMPLOYEE_NAME, CreateJobRole());
+                Video foundInterestedVideo = employeeDataHandler.GetAssignedVideoById(dummyVideoId);
             };
-            action.Should().Throw<ArgumentException>();
-        }
-        [Test]
-        public void EmployeeNullNameParameterTest()
-        {
-            Action action = () =>
-            {
-                Employee? employee = CreateEmployee(EMPLOYEE_ID, null, CreateJobRole());
-            };
-            action.Should().Throw<ArgumentException>();
+            action.Should().Throw<Exception>();
         }
 
-        [Test]
-        public void EmployeeNullJobRoleParameterTest()
-        {
-            Action action = () =>
-            {
-                Employee? employee = CreateEmployee(EMPLOYEE_ID, EMPLOYEE_NAME, null);
-            };
-            action.Should().Throw<ArgumentException>();
-        }
         #endregion
     }
 }

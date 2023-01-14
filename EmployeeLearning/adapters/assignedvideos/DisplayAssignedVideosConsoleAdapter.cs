@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmployeeLearning.adapters.displaymodel;
 
 namespace EmployeeLearning.adapters.assignedvideos
 {
     public class DisplayAssignedVideosConsoleAdapter : IDisplayAssignedVideos
     {
-        public void DisplayAssignedVideos(string text)
+        /// <summary>
+        /// Display assigned Video row
+        /// </summary>
+        /// <param name="model"></param>
+        public void DisplayAssignedVideos(AdapterModel model)
         {
-            Console.WriteLine(text);
+            Console.WriteLine(model.Text);
         }
     }
 }

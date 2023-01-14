@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeLearning.model.employees
+namespace EmployeeLearning.datahandler.employees
 {
-    public interface IEmployees
+    public interface IEmployeesDataHandler
     {
         public void AddEmployees(List<Employee> employees);
         public void AddEmployee(Employee employee);
+        public void RemoveEmployee(Guid employeeId);
         public void ModifyEmployee(Employee employee);
-        public void RemoveEmployee(int? EmployeeId);
         public List<Employee> GetAllEmployees();
-        public Employee GetEmployeeById(int? employeeId);
+        public Employee GetEmployeeById(Guid? employeeId);
     }
 }

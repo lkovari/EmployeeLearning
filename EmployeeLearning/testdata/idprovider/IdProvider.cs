@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace EmployeeLearning.testdata.idprovider
 {
-    public static class IdProvider
+    public sealed class IdProvider
     {
-        private static int _lastVideoId = 0;
-        public static int NewVideoId { get { return _lastVideoId++; } }
+        public Guid NewId => Guid.NewGuid();
 
-        private static int _lastJobRoleId = 0;
-        public static int NewJobRoleId { get { return _lastJobRoleId++; } }
-
-        private static int _lastEmployeeId = 0;
-        public static int NewEmployeeId { get { return _lastEmployeeId++; } }
-
+        private static IdProvider? idProvider = null;
+        public static IdProvider Instance
+        {
+            get
+            {
+                idProvider ??= new IdProvider();
+                return idProvider;
+            }
+        }
     }
 }
