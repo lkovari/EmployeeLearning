@@ -48,12 +48,15 @@ namespace EmployeeLearning.datahandler.employee
         public void DisplayAssignedVideos()
         {
             jobRoleDataHandler = new JobRoleDataHandler(Employee.JobRole);
+            List<string> assignedVideos = new();
             jobRoleDataHandler.GetAssignedVideos().ForEach(video => {
                 string textToDisplay = string.Format("ID {0} Tittle {1}", video.Id, video.Name);
-                AdapterModel adapterModel = new AdapterModel();
-                adapterModel.Text = textToDisplay;
-                displayAssignedVideos.DisplayAssignedVideos(adapterModel);
+                assignedVideos.Add(textToDisplay);
             });
+            AdapterModel adapterModelForAssignedVideos = new();
+            adapterModelForAssignedVideos.Tittle = "Assigned Videos to JobRole";
+            adapterModelForAssignedVideos.Data.AddRange(assignedVideos);
+            displayAssignedVideos.DisplayAssignedVideos(adapterModelForAssignedVideos);
         }
 
         public void DisplayWatchHistory()
@@ -61,19 +64,23 @@ namespace EmployeeLearning.datahandler.employee
             List<Video> watchedVideos = 
                 jobRoleDataHandler.GetAssignedVideos()
                 .Where(video => video.IsWatched).ToList();
-            AdapterModel adapterModel = new AdapterModel();
+            AdapterModel adapterModelForHistory = new();
+            adapterModelForHistory.Tittle = "Watch History of JobRole's Videos";
             if (watchedVideos.Count > 0)
             {
+                List<string> watchHistory = new List<string>();
                 watchedVideos.ForEach(video =>
                 {
-                    adapterModel.Text = string.Format("Watched at {0} Titlle {1} Total {2}# of Watches",
+                    string watchHistoryItem = string.Format("Watched at {0} Titlle {1} Total {2}# of Watches",
                         video.WatchDate, video.Name, video.WatchCount);
-                    displayHistoryOfWatchedVideos.DisplayHistory(adapterModel);
+                    watchHistory.Add(watchHistoryItem);
                 });
+                adapterModelForHistory.Data.AddRange(watchHistory);
+                displayHistoryOfWatchedVideos.DisplayHistory(adapterModelForHistory);
             } else
             {
-                adapterModel.Text = "No Videos Watched!";
-                displayHistoryOfWatchedVideos.DisplayHistory(adapterModel);
+                adapterModelForHistory.Text = "No Videos Watched!";
+                displayHistoryOfWatchedVideos.DisplayHistory(adapterModelForHistory);
             }
         }
 

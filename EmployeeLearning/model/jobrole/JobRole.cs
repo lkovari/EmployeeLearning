@@ -9,6 +9,7 @@ namespace EmployeeLearning.model.jobrole
         public List<Video> LearningPath { get; }
         #endregion
 
+        #region CONSTRUCTOR
         public JobRole(string? name, List<Video>? videos) : base(name)
         {
             if (videos == null)
@@ -20,5 +21,6 @@ namespace EmployeeLearning.model.jobrole
                 LearningPath = videos;
             }
         }
+        #endregion
     }
 }

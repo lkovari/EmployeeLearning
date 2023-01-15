@@ -6,7 +6,13 @@ namespace EmployeeLearning.adapters.watchhistory
     {
         public void DisplayHistory(AdapterModel model)
         {
-            Console.WriteLine(model.Text);
+            Console.WriteLine();
+            Console.WriteLine(model.Tittle);
+            if (model.Data != null && model.Data.Count > 0)
+            {
+                model.Data.ForEach(d => Console.WriteLine(d));
+            }
+            Console.WriteLine();
         }
     }
 }

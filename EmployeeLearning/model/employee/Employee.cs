@@ -8,10 +8,16 @@ namespace EmployeeLearning.model.employee
         #region PROPERTIES
         private JobRole _jobRole;
         public JobRole JobRole { get { return _jobRole; } }
+        public string UserName { get; set; }
+        public string Password { get; set; }
         public bool IsAuthenticated { get; set; }
         #endregion
 
-        public Employee(string? name, JobRole? jobRole) : base(name)
+        #region CONSTRUCTOR
+        public Employee(string? name,
+            string userName,
+            string password,
+            JobRole? jobRole) : base(name)
         {
             if (jobRole == null)
             {
@@ -20,6 +26,23 @@ namespace EmployeeLearning.model.employee
             {
                 _jobRole = jobRole;
             }
+            if (userName == null)
+            {
+                throw new ArgumentException(string.Format("Parameter {{0}}", userName));
+            }
+            else
+            {
+                UserName = userName;
+            }
+            if (password == null)
+            {
+                throw new ArgumentException(string.Format("Parameter {{0}}", password));
+            }
+            else
+            {
+                Password = password;
+            }
         }
+        #endregion
     }
 }

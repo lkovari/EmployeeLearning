@@ -15,5 +15,6 @@ namespace EmployeeLearning.datahandler.employees
         public void ModifyEmployee(Employee employee);
         public List<Employee> GetAllEmployees();
         public Employee GetEmployeeById(Guid? employeeId);
+        public Employee GetEmployeeByUserName(string userName);
     }
 }

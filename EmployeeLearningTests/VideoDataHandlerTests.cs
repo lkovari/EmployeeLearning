@@ -17,7 +17,9 @@ namespace EmployeeLearningTests
         private static readonly int EXPECTED_RESULT_WATCHED_TWO_TIMES = 2;
         #endregion
 
+        #region DATA HANDLER
         private VideoDataHandler videoDataHandler;
+        #endregion
 
         #region INITIALIZE
         [SetUp]
@@ -38,6 +40,16 @@ namespace EmployeeLearningTests
         public void VideoNamePropertyTest()
         {
             videoDataHandler.Video.Name.Should().Be(EXPECTED_NAME);
+        }
+
+        [Test]
+        public void VideoNamePropertyNotSetTest()
+        {
+            Action action = () =>
+            {
+                Video newVideo = new(null);
+            };
+            action.Should().Throw<ArgumentException>();
         }
 
         [Test]

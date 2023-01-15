@@ -25,7 +25,8 @@ namespace EmployeeLearning.model
             if (name == null)
             {
                 throw new ArgumentException(string.Format("Parameter {{0}}", name));
-            } else
+            }
+            else
             {
                 Name = name;
             }

@@ -17,7 +17,9 @@ namespace EmployeeLearningTests
         private static readonly string VIDEO_TEST_NAME = "Ethics";
         #endregion
 
+        #region DATA HANDLER
         private JobRoleDataHandler jobRoleDataHandler;
+        #endregion
 
         #region INITIALIZE
         [SetUp]
@@ -50,6 +52,17 @@ namespace EmployeeLearningTests
             jobRoleDataHandler.JobRole.LearningPath.Should().NotBeNull();
             jobRoleDataHandler.JobRole.LearningPath.Count.Should()
                 .BeGreaterThan(VIDEO_COUNT_EXPECTED_RESULT_ZERO);
+        }
+
+
+        [Test]
+        public void JobRoleNamePropertyNotSetTest()
+        {
+            Action action = () =>
+            {
+                JobRole newJobRole = new(null, jobRoleDataHandler.JobRole.LearningPath);
+            };
+            action.Should().Throw<ArgumentException>();
         }
 
         [Test]

@@ -19,11 +19,14 @@ namespace EmployeeLearningTests
         #region CONSTANTS
         private readonly int EMPLOYE_COUNT_ZERO = 0;
         private readonly int EMPLOYE_INDEX_0 = 0;
-        private readonly int JOBROLE_INDEX = 1;
+        private readonly int JOBROLE_INDEX0 = 0;
+        private readonly int JOBROLE_INDEX1 = 1;
         private readonly string EMPLOYEE_NEW_NAME = "John Carmac";
         #endregion
 
+        #region DATA HANDLER
         private EmployeesDataHandler employeesDataHandler;
+        #endregion
 
         #region INITIALIZE
         [SetUp]
@@ -53,7 +56,9 @@ namespace EmployeeLearningTests
             employeesDataHandler.Should().NotBeNull();
             int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
             Employee employe = new("Alistair McIntyre",
-                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX]);
+                    "AMcIntyre",
+                    "",
+                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
             employeesDataHandler.AddEmployee(employe);
             int employeCoundAfterAdd = employeesDataHandler.GetAllEmployees().Count;
             employeCoundAfterAdd.Should().BeGreaterThan(employeCoundBeforeAdd);
@@ -69,15 +74,40 @@ namespace EmployeeLearningTests
             int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
 
             Employee employeOne = 
-                new Employee("Ian Fraser Kilminster", JobRoleTestDataProvider.Instance.JobRoles[0]);
+                new Employee("Ian Fraser Kilminster",
+                "JFKilminster",
+                "Motorhead",
+                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
             Employee employeTwo =
-                new Employee("Seimour Cray", JobRoleTestDataProvider.Instance.JobRoles[1]);
+                new Employee("Seimour Cray",
+                "SCray",
+                "",
+                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX1]);
             List<Employee> employeesToAdd = new List<Employee>();
             employeesToAdd.Add(employeOne);
             employeesToAdd.Add(employeTwo);
             employeesDataHandler.AddEmployees(employeesToAdd);
             int employeesCountAfterAdd = employeesDataHandler.GetAllEmployees().Count;
             employeesCountAfterAdd.Should().Be(employeCoundBeforeAdd + 2);
+        }
+
+        public void EmployeesDataHandlerAddEmployeesUserNameDuplicatedTest()
+        {
+            employeesDataHandler.Should().NotBeNull();
+            int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
+
+            Employee employeOne =
+                new Employee("Johm Doe",
+                "JDoe",
+                "",
+                JobRoleTestDataProvider.Instance.JobRoles[0]);
+
+            Action action = () =>
+            {
+                employeesDataHandler.AddEmployee(employeOne);
+            };
+            action.Should().Throw<Exception>().
+                WithMessage("AddEmploye: Employe UserName already exists!");
         }
 
         [Test]

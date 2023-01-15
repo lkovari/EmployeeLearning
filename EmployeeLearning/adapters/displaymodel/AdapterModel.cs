@@ -11,5 +11,11 @@ namespace EmployeeLearning.adapters.displaymodel
         public string? Tittle { get; set; }
         public Dictionary<string, object>? Parameters { get; set; }
         public string? Text { get; set; }
+        public List<string> Data { get; set; }
+
+        public AdapterModel()
+        {
+            Data = new List<string>();
+        }
     }
 }

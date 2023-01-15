@@ -46,7 +46,16 @@ namespace EmployeeLearning.datahandler.employees
         /// <param name="employee">Employee</param>
         public void AddEmployee(Employee employee)
         {
-            employees.CompanyEmployees.Add(employee);
+            List<Employee> duplicatedEmployee = 
+                    employees.CompanyEmployees
+                    .Where(employee => employee.UserName != employee.UserName).ToList();
+            if (duplicatedEmployee == null || duplicatedEmployee.Count < 1)
+            {
+                employees.CompanyEmployees.Add(employee);
+            } else
+            {
+                throw new Exception("AddEmploye: Employe UserName already exists!");
+            }
         }
 
         /// <summary>
@@ -110,6 +119,16 @@ namespace EmployeeLearning.datahandler.employees
             {
                 throw new Exception("Modify Employee: Employee Not Found in Employees!");
             }
+        }
+
+        /// <summary>
+        /// Get Employe by userName
+        /// </summary>
+        /// <param name="userName">The name of the user</param>
+        /// <returns>Employee</returns>
+        public Employee GetEmployeeByUserName(string userName)
+        {
+            return employees.CompanyEmployees.Single(employee => employee.UserName == userName);
         }
         #endregion
     }

@@ -22,7 +22,9 @@ namespace EmployeeLearningTests
         private readonly int WATCHED_VIDEO_COUNT_ONE = 1;
         #endregion
 
+        #region DATA HANDLER
         private EmployeeDataHandler employeeDataHandler;
+        #endregion
 
         #region INITIALIZE
         [SetUp]
@@ -68,6 +70,19 @@ namespace EmployeeLearningTests
             employeeDataHandler.Employee.JobRole.LearningPath.Should().NotBeNull();
             employeeDataHandler.Employee.JobRole.LearningPath.Count.Should().
                 BeGreaterThan(EMPLOYEE_JOBROLE_LERNINGPATH_ZERO_COUNT);
+        }
+
+        [Test]
+        public void EmployeeNamePropertyNotSetTest()
+        {
+            Action action = () =>
+            {
+                Employee newEmployee = new(null,
+                    employeeDataHandler.Employee.UserName,
+                    employeeDataHandler.Employee.Password,
+                    employeeDataHandler.Employee.JobRole);
+            };
+            action.Should().Throw<ArgumentException>();
         }
 
         [Test]
