@@ -9,7 +9,13 @@ namespace EmployeeLearning.datahandler.employees
 {
     public class EmployeesDataHandler : IEmployeesDataHandler
     {
-        IEmployeeDataHandler employeeDataHandler;
+        #region CONSTANTS
+        private readonly int EMPLOYEE_INDEX = 0;
+        #endregion
+
+        #region DATA HANDLER
+        public IEmployeeDataHandler employeeDataHandler;
+        #endregion
 
         private Employees employees = new();
 

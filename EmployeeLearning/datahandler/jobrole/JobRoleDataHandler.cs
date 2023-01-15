@@ -55,7 +55,7 @@ namespace EmployeeLearning.datahandler.jobrole
         /// Remove the Assigned Video from the Videos of JobRole
         /// </summary>
         /// <param name="videoId">Guid ~ The Id of the Video</param>
-        public void RemoveAssignedVideo(Guid videoId)
+        public void RemoveAssignedVideoById(Guid videoId)
         {
             JobRole.LearningPath.Remove(GetAssignedVideoById(videoId));
         }

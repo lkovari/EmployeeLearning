@@ -10,6 +10,8 @@ namespace EmployeeLearning
 {
     internal class Program
     {
+        private static int FIRST_EMPLOYE = 0;
+
         static void Main(string[] args)
         {
             /*
@@ -20,7 +22,7 @@ namespace EmployeeLearning
             */
 
             EmployeesDataHandler employeesController = new EmployeesDataHandler();
-            Employee employee = employeesController.GetAllEmployees()[0];
+            Employee employee = employeesController.GetAllEmployees()[FIRST_EMPLOYE];
 
             EmployeeDataHandler employeeController = 
                 new EmployeeDataHandler(employee,

@@ -14,7 +14,7 @@ namespace EmployeeLearning.adapters.assignedvideos
             Console.WriteLine(model.Tittle);
             if (model.Data != null && model.Data.Count > 0)
             {
-                model.Data.ForEach(d => Console.WriteLine(d));
+                model.Data.ForEach(data => Console.WriteLine(data));
             }
             Console.WriteLine();
         }

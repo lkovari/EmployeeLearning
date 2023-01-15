@@ -1,25 +1,29 @@
 ﻿using EmployeeLearning.datahandler.employees;
 using EmployeeLearning.model.employee;
 using EmployeeLearning.testdata.digest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.datahandler.login
 {
     public class LoginHandler : ILoginHandler
     {
         #region PUBLIC PROPERTIES
-        public IEmployeesDataHandler employeesDataHandler;
+        private IEmployeesDataHandler employeesDataHandler;
         #endregion
 
-        LoginHandler(IEmployeesDataHandler employeesDataHandler)
+        #region CONSTRUCTOR
+        public LoginHandler(IEmployeesDataHandler employeesDataHandler)
         {
             this.employeesDataHandler = employeesDataHandler;
         }
+        #endregion
 
+        #region PUBLIC METHODS
+        /// <summary>
+        /// Login an Employee
+        /// </summary>
+        /// <param name="username">The username</param>
+        /// <param name="password">The password</param>
+        /// <returns>true if success false if failed</returns>
         public bool Login(string username, string password)
         {
             string digest = CreateDigest.GenerateDigest(password);
@@ -28,5 +32,6 @@ namespace EmployeeLearning.datahandler.login
             foundEmployee.IsAuthenticated = isPasswordMatched;
             return isPasswordMatched;
         }
+        #endregion
     }
 }

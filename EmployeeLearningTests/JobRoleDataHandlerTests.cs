@@ -83,7 +83,7 @@ namespace EmployeeLearningTests
         {
             int videosCountBeforeRemove = jobRoleDataHandler.JobRole.LearningPath.Count;
             Video interestedVideo = jobRoleDataHandler.JobRole.LearningPath[JOBROLE_TEST_DATA_INDEX0];
-            jobRoleDataHandler.RemoveAssignedVideo(interestedVideo.Id);
+            jobRoleDataHandler.RemoveAssignedVideoById(interestedVideo.Id);
             int videosCountAfterRemove = jobRoleDataHandler.JobRole.LearningPath.Count;
             videosCountAfterRemove.Should().BeLessThan(videosCountBeforeRemove);
             Action action = () =>
