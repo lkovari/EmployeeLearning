@@ -1,4 +1,5 @@
 ﻿using EmployeeLearning.adapters.assignedvideos;
+using EmployeeLearning.adapters.displayemployee;
 using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.datahandler.employee;
 using EmployeeLearning.model.employee;
@@ -38,6 +39,7 @@ namespace EmployeeLearning.datahandler.employees
 
             employeeDataHandler =
                 new EmployeeDataHandler(employees.CompanyEmployees[EMPLOYEE_INDEX],
+                    new DisplayEmployeeConsoleAdapter(),
                     new DisplayAssignedVideosConsoleAdapter(),
                     new DisplayHistoryOfWatchedVideosConsoleAdapter()
                 );

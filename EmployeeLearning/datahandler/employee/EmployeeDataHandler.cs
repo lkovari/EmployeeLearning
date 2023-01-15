@@ -1,4 +1,5 @@
 ﻿using EmployeeLearning.adapters.assignedvideos;
+using EmployeeLearning.adapters.displayemployee;
 using EmployeeLearning.adapters.displaymodel;
 using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.controller.video;
@@ -26,18 +27,21 @@ namespace EmployeeLearning.datahandler.employee
         #endregion
 
         #region DISPLAY ADAPTERS
+        IDisplayEmployee displayEmployeeAdapter;
         private IDisplayAssignedVideos displayAssignedVideos;
         private IDisplayHistoryOfWatchedVideos displayHistoryOfWatchedVideos;
         #endregion
 
         #region CONSTRUCTOR
         public EmployeeDataHandler(Employee employee,
+            IDisplayEmployee displayEmployeeAdapter,
             IDisplayAssignedVideos displayAssignedVideos,
             IDisplayHistoryOfWatchedVideos displayHistoryOfWatchedVideos)
         {
             Employee = employee;
             this.displayAssignedVideos = displayAssignedVideos;
             this.displayHistoryOfWatchedVideos = displayHistoryOfWatchedVideos;
+            this.displayEmployeeAdapter = displayEmployeeAdapter;
 
             jobRoleDataHandler = new JobRoleDataHandler(employee.JobRole);
             videoDataHandler = new VideoDataHandler();
@@ -54,7 +58,7 @@ namespace EmployeeLearning.datahandler.employee
                 assignedVideos.Add(textToDisplay);
             });
             AdapterModel adapterModelForAssignedVideos = new();
-            adapterModelForAssignedVideos.Tittle = "Assigned Videos to JobRole";
+            adapterModelForAssignedVideos.Tittle = "Assigned Videos to JobRole " + Employee.JobRole.Name;
             adapterModelForAssignedVideos.Data.AddRange(assignedVideos);
             displayAssignedVideos.DisplayAssignedVideos(adapterModelForAssignedVideos);
         }
@@ -130,6 +134,15 @@ namespace EmployeeLearning.datahandler.employee
         {
             return jobRoleDataHandler.
                 GetAssignedVideos().Where(video => video.IsWatched).ToList();
+        }
+
+        public void DisplayEmployee()
+        {
+            AdapterModel adapterModelForEmployee = new();
+            adapterModelForEmployee.Tittle = "Employee Data";
+            adapterModelForEmployee.Text =
+                String.Format("Name: {0} User name: {1} JobRole: {2}", Employee.Name, Employee.UserName, Employee.JobRole.Name);
+            displayEmployeeAdapter.DisplayEmployee(adapterModelForEmployee);
         }
         #endregion
     }

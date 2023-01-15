@@ -1,4 +1,5 @@
 ﻿using EmployeeLearning.adapters.assignedvideos;
+using EmployeeLearning.adapters.displayemployee;
 using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.datahandler.employee;
 using EmployeeLearning.model.employee;
@@ -33,6 +34,7 @@ namespace EmployeeLearningTests
             employeeDataHandler =
                 new EmployeeDataHandler(EmployeeTestDataProvider.
                     Instance.Employees[EMPLOYEE_TEST_DATA_INDEX],
+                    new DisplayEmployeeConsoleAdapter(),
                     new DisplayAssignedVideosConsoleAdapter(),
                     new DisplayHistoryOfWatchedVideosConsoleAdapter()
                 );

@@ -16,6 +16,7 @@ namespace EmployeeLearning.datahandler.employee
         public List<Video> GetAssignedVideos();
         public List<Video> GetWatchedVideos();
 
+        public void DisplayEmployee();
         public void DisplayAssignedVideos();
         public void DisplayWatchHistory();
     }

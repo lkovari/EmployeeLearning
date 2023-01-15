@@ -1,5 +1,6 @@
 ﻿
 using EmployeeLearning.adapters.assignedvideos;
+using EmployeeLearning.adapters.displayemployee;
 using EmployeeLearning.adapters.displayvideos;
 using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.datahandler.employee;
@@ -28,10 +29,13 @@ namespace EmployeeLearning
             Employee employee = employeesController.GetAllEmployees()[FIRST_EMPLOYE];
 
             EmployeeDataHandler employeeController = 
-                new EmployeeDataHandler(employee,
+                new(employee,
+                    new DisplayEmployeeConsoleAdapter(),
                     new DisplayAssignedVideosConsoleAdapter(),
                     new DisplayHistoryOfWatchedVideosConsoleAdapter()
                 );
+            employeeController.DisplayEmployee();
+
             employeeController.DisplayAssignedVideos();
             employeeController.GetAssignedVideos().ForEach(video => {
                 employeeController.WatchingAVideo(video.Id);
