@@ -37,7 +37,7 @@ namespace EmployeeLearning.datahandler.employees
             #endregion
 
             employeeDataHandler =
-                new EmployeeDataHandler(employees.CompanyEmployees[0],
+                new EmployeeDataHandler(employees.CompanyEmployees[EMPLOYEE_INDEX],
                     new DisplayAssignedVideosConsoleAdapter(),
                     new DisplayHistoryOfWatchedVideosConsoleAdapter()
                 );

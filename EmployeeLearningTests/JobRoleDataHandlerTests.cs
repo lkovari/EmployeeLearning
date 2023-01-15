@@ -10,11 +10,11 @@ namespace EmployeeLearningTests
     public class JobRoleDataHandlerTests
     {
         #region CONSTANTS
-        private static readonly int JOBROLE_TEST_DATA_INDEX0 = 0;
-        private static readonly int JOBROLE_TEST_DATA_INDEX5 = 5;
-        private static readonly int VIDEO_TEST_DATA_INDEX0 = 0;
-        private static readonly int VIDEO_COUNT_EXPECTED_RESULT_ZERO = 0;
-        private static readonly string VIDEO_TEST_NAME = "Ethics";
+        private readonly int JOBROLE_TEST_DATA_INDEX0 = 0;
+        private readonly int JOBROLE_TEST_DATA_INDEX5 = 5;
+        private readonly int VIDEO_TEST_DATA_INDEX0 = 0;
+        private readonly int VIDEO_COUNT_EXPECTED_RESULT_ZERO = 0;
+        private readonly string VIDEO_TEST_NAME = "Ethics";
         #endregion
 
         #region DATA HANDLER

@@ -10,11 +10,11 @@ namespace EmployeeLearningTests
     public class VideoDataHandlerTests
     {
         #region CONSTANTS
-        private static readonly string TEST_NAME = "Ethics";
-        private static readonly string EXPECTED_NAME = "Ethics";
-        private static readonly int EXPECTED_RESULT_WATCHED_ZERO_TIMES = 0;
-        private static readonly int EXPECTED_RESULT_WATCHED_ONE_TIMES = 1;
-        private static readonly int EXPECTED_RESULT_WATCHED_TWO_TIMES = 2;
+        private readonly string TEST_NAME = "Ethics";
+        private readonly string EXPECTED_NAME = "Ethics";
+        private readonly int EXPECTED_RESULT_WATCHED_ZERO_TIMES = 0;
+        private readonly int EXPECTED_RESULT_WATCHED_ONE_TIMES = 1;
+        private readonly int EXPECTED_RESULT_WATCHED_TWO_TIMES = 2;
         #endregion
 
         #region DATA HANDLER

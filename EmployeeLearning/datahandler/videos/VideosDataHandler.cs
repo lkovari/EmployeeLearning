@@ -7,7 +7,7 @@ namespace EmployeeLearning.datahandler.videos
     public class VideosDataHandler : IVideosDataHandler
     {
         #region PUBLIC PROPERTIES
-        public List<Video> Videos { get; private set; }
+        private List<Video> Videos { get; set; }
         #endregion
 
         #region DISPLAY ADAPTERS
@@ -21,16 +21,27 @@ namespace EmployeeLearning.datahandler.videos
         }
 
         #region PUBLIC METHODS
+        /// <summary>
+        /// Add a Video
+        /// </summary>
+        /// <param name="video">Video</param>
         public void addVideo(Video video)
         {
             Videos.Add(video);
         }
 
+        /// <summary>
+        /// Remove a Video by Id
+        /// </summary>
+        /// <param name="videoId">Guid</param>
         public void removeVideoById(Guid videoId)
         {
             Videos.Remove(GetVideoById(videoId));
         }
 
+        /// <summary>
+        /// Display All available Videos
+        /// </summary>
         public void displayAllVideos()
         {
             List<string> allVideos = new();
@@ -39,14 +50,28 @@ namespace EmployeeLearning.datahandler.videos
                 allVideos.Add(textToDisplay);
             });
             AdapterModel adapterModelForAllVideos = new();
-            adapterModelForAllVideos.Tittle = "Videos";
+            adapterModelForAllVideos.Tittle = "Available Videos";
             adapterModelForAllVideos.Data.AddRange(allVideos);
             adapterForDisplayVideos.DisplayVideos(adapterModelForAllVideos);
         }
 
+        /// <summary>
+        /// Get Video by Id
+        /// </summary>
+        /// <param name="videoId">Guid</param>
+        /// <returns>Video</returns>
         public Video GetVideoById(Guid videoId)
         {
             return (Video)Videos.Single(v => v.Id == videoId);
+        }
+
+        /// <summary>
+        /// Get all available Videos
+        /// </summary>
+        /// <returns>List<Video></returns>
+        public List<Video> getAllVideos()
+        {
+            return Videos;
         }
         #endregion
 

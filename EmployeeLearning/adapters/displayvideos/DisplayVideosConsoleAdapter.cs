@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeLearning.adapters.displayvideos
 {
-    public class DisplayVideos : IDisplayVideos
+    public class DisplayVideosConsoleAdapter : IDisplayVideos
     {
         void IDisplayVideos.DisplayVideos(AdapterModel model)
         {

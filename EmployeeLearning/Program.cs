@@ -1,10 +1,13 @@
 ﻿
 using EmployeeLearning.adapters.assignedvideos;
+using EmployeeLearning.adapters.displayvideos;
 using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.datahandler.employee;
 using EmployeeLearning.datahandler.employees;
+using EmployeeLearning.datahandler.videos;
 using EmployeeLearning.model.employee;
 using EmployeeLearning.testdata.digest;
+using EmployeeLearning.testdata.videostore;
 
 namespace EmployeeLearning
 {
@@ -35,6 +38,10 @@ namespace EmployeeLearning
                 employeeController.WatchingAVideo(video.Id);
             });
             employeeController.DisplayWatchHistory();
+
+            VideosDataHandler videosDataHandler = new VideosDataHandler(VideoTestDataProvider.Instance.Videos,
+                    new DisplayVideosConsoleAdapter());
+            videosDataHandler.displayAllVideos();
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using EmployeeLearning.model.video;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.datahandler.videos
 {
@@ -13,5 +8,6 @@ namespace EmployeeLearning.datahandler.videos
         public void removeVideoById(Guid videoId);
         public void displayAllVideos();
         public Video GetVideoById(Guid videoId);
+        public List<Video> getAllVideos();
     }
 }
