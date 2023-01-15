@@ -95,6 +95,29 @@ namespace EmployeeLearningTests
             modifiedEmployee.Should().NotBeNull();
             modifiedEmployee.Name.Should().BeSameAs(EMPLOYEE_NEW_NAME); 
         }
+
+        [Test]
+        public void EmployeesDataHandlerGetEmployeeByIdTest()
+        {
+            employeesDataHandler.Should().NotBeNull();
+            Employee employee = EmployeeTestDataProvider.Instance.Employees[EMPLOYE_INDEX_0];
+            Employee foundEmployee = employeesDataHandler.GetEmployeeById(employee.Id);
+            foundEmployee.Should().NotBeNull();
+            foundEmployee.Should().BeSameAs(employee);
+        }
+
+        [Test]
+        public void EmployeesDataHandlerGetEmployeeByIdFailedTest()
+        {
+            employeesDataHandler.Should().NotBeNull();
+            Action action = () =>
+            {
+                // pass a New Id intentionally
+                Employee foundEmployee = employeesDataHandler.GetEmployeeById(IdProvider.Instance.NewId);
+            };
+            action.Should().Throw<Exception>();
+        }
+
         #endregion
     }
 }

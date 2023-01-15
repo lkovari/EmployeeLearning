@@ -1,6 +1,7 @@
 ﻿using EmployeeLearning.datahandler.jobrole;
 using EmployeeLearning.model.jobrole;
 using EmployeeLearning.model.video;
+using EmployeeLearning.testdata.idprovider;
 using EmployeeLearning.testdata.jobrolestore;
 using FluentAssertions;
 
@@ -98,8 +99,8 @@ namespace EmployeeLearningTests
                 JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_TEST_DATA_INDEX5];
             Action action = () =>
             {
-                // pass a JobRole Id intentionally
-                Video video = jobRoleDataHandler.GetAssignedVideoById(jobRoleToFind.Id);
+                // pass a New Id intentionally
+                Video video = jobRoleDataHandler.GetAssignedVideoById(IdProvider.Instance.NewId);
             };
             action.Should().Throw<Exception>();
         }
