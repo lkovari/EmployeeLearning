@@ -9,7 +9,9 @@ namespace EmployeeLearningTests
     public class JobRoleDataHandlerTests
     {
         #region CONSTANTS
-        private static readonly int JOBROLE_TEST_DATA_INDEX = 0;
+        private static readonly int JOBROLE_TEST_DATA_INDEX0 = 0;
+        private static readonly int JOBROLE_TEST_DATA_INDEX5 = 5;
+        private static readonly int VIDEO_TEST_DATA_INDEX0 = 0;
         private static readonly int VIDEO_COUNT_EXPECTED_RESULT_ZERO = 0;
         private static readonly string VIDEO_TEST_NAME = "Ethics";
         #endregion
@@ -21,7 +23,7 @@ namespace EmployeeLearningTests
         public void Setup()
         {
             jobRoleDataHandler = 
-                new(JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_TEST_DATA_INDEX]);
+                new(JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_TEST_DATA_INDEX0]);
         }
         #endregion
 
@@ -66,13 +68,38 @@ namespace EmployeeLearningTests
         public void JobRoleRemoveVideoFromJobRoleTest()
         {
             int videosCountBeforeRemove = jobRoleDataHandler.JobRole.LearningPath.Count;
-            Video interestedVideo = jobRoleDataHandler.JobRole.LearningPath[JOBROLE_TEST_DATA_INDEX];
+            Video interestedVideo = jobRoleDataHandler.JobRole.LearningPath[JOBROLE_TEST_DATA_INDEX0];
             jobRoleDataHandler.RemoveAssignedVideo(interestedVideo.Id);
             int videosCountAfterRemove = jobRoleDataHandler.JobRole.LearningPath.Count;
             videosCountAfterRemove.Should().BeLessThan(videosCountBeforeRemove);
             Action action = () =>
             {
                 Video foundVideo = jobRoleDataHandler.GetAssignedVideoById(interestedVideo.Id);
+            };
+            action.Should().Throw<Exception>();
+        }
+
+        [Test]
+        public void JobRoleFindVideoByIdTest()
+        {
+            JobRole jobRoleToFind =
+                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_TEST_DATA_INDEX5];
+            Action action = () =>
+            {
+                Video video = jobRoleDataHandler.GetAssignedVideoById(jobRoleToFind.LearningPath[VIDEO_TEST_DATA_INDEX0].Id);
+            };
+            action.Should().Throw<Exception>();
+        }
+
+        [Test]
+        public void JobRoleFindVideoByIdFailedTest()
+        {
+            JobRole jobRoleToFind = 
+                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_TEST_DATA_INDEX5];
+            Action action = () =>
+            {
+                // pass a JobRole Id intentionally
+                Video video = jobRoleDataHandler.GetAssignedVideoById(jobRoleToFind.Id);
             };
             action.Should().Throw<Exception>();
         }
