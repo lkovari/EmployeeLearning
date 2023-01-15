@@ -14,18 +14,20 @@ namespace EmployeeLearning.datahandler.videos
         private IDisplayVideos adapterForDisplayVideos;
         #endregion
 
+        #region CONSTRUCTOR
         public VideosDataHandler(List<Video> videos, IDisplayVideos displayVideosAdapter)
         {
             Videos = videos;
             adapterForDisplayVideos = displayVideosAdapter;
         }
+        #endregion
 
         #region PUBLIC METHODS
         /// <summary>
         /// Add a Video
         /// </summary>
         /// <param name="video">Video</param>
-        public void addVideo(Video video)
+        public void AddVideo(Video video)
         {
             Videos.Add(video);
         }
@@ -34,7 +36,7 @@ namespace EmployeeLearning.datahandler.videos
         /// Remove a Video by Id
         /// </summary>
         /// <param name="videoId">Guid</param>
-        public void removeVideoById(Guid videoId)
+        public void RemoveVideoById(Guid videoId)
         {
             Videos.Remove(GetVideoById(videoId));
         }
@@ -42,7 +44,7 @@ namespace EmployeeLearning.datahandler.videos
         /// <summary>
         /// Display All available Videos
         /// </summary>
-        public void displayAllVideos()
+        public void DisplayAllVideos()
         {
             List<string> allVideos = new();
             Videos.ForEach(video => {
@@ -69,7 +71,7 @@ namespace EmployeeLearning.datahandler.videos
         /// Get all available Videos
         /// </summary>
         /// <returns>List<Video></returns>
-        public List<Video> getAllVideos()
+        public List<Video> GetAllVideos()
         {
             return Videos;
         }

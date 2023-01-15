@@ -1,13 +1,16 @@
 ﻿
 using EmployeeLearning.adapters.assignedvideos;
 using EmployeeLearning.adapters.displayemployee;
+using EmployeeLearning.adapters.displayjobroles;
 using EmployeeLearning.adapters.displayvideos;
 using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.datahandler.employee;
 using EmployeeLearning.datahandler.employees;
+using EmployeeLearning.datahandler.jobroles;
 using EmployeeLearning.datahandler.videos;
 using EmployeeLearning.model.employee;
 using EmployeeLearning.testdata.digest;
+using EmployeeLearning.testdata.jobrolestore;
 using EmployeeLearning.testdata.videostore;
 
 namespace EmployeeLearning
@@ -45,7 +48,12 @@ namespace EmployeeLearning
 
             VideosDataHandler videosDataHandler = new VideosDataHandler(VideoTestDataProvider.Instance.Videos,
                     new DisplayVideosConsoleAdapter());
-            videosDataHandler.displayAllVideos();
+            videosDataHandler.DisplayAllVideos();
+
+            JobRolesDataHandler jobRolesDataHandler = 
+                new JobRolesDataHandler(JobRoleTestDataProvider.Instance.JobRoles,
+                new DisplayJobRolesConsoleAdapter());
+            jobRolesDataHandler.DisplayJobRoles();
         }
     }
 }

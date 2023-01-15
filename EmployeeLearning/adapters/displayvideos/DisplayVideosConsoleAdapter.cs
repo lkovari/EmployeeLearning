@@ -1,14 +1,13 @@
 ﻿using EmployeeLearning.adapters.displaymodel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.adapters.displayvideos
 {
     public class DisplayVideosConsoleAdapter : IDisplayVideos
     {
+        /// <summary>
+        /// Display Videos
+        /// </summary>
+        /// <param name="model">AdapterModel</param>
         void IDisplayVideos.DisplayVideos(AdapterModel model)
         {
             Console.WriteLine();

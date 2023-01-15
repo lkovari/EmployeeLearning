@@ -1,15 +1,5 @@
 ﻿using EmployeeLearning.model.employee;
-using EmployeeLearning.model.employees;
-using EmployeeLearning.model.jobrole;
-using EmployeeLearning.model.video;
-using EmployeeLearning.testdata.idprovider;
 using EmployeeLearning.testdata.jobrolestore;
-using EmployeeLearning.testdata.videostore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.testdata.employeestorage
 {

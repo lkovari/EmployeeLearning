@@ -5,13 +5,7 @@ using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.controller.video;
 using EmployeeLearning.datahandler.jobrole;
 using EmployeeLearning.model.employee;
-using EmployeeLearning.model.employees;
 using EmployeeLearning.model.video;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.datahandler.employee
 {

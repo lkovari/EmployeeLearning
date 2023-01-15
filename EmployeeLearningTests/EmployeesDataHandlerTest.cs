@@ -1,16 +1,10 @@
 ﻿using EmployeeLearning.datahandler.employees;
 using EmployeeLearning.model.employee;
-using EmployeeLearning.model.employees;
-using EmployeeLearning.testdata;
 using EmployeeLearning.testdata.employeestorage;
 using EmployeeLearning.testdata.idprovider;
 using EmployeeLearning.testdata.jobrolestore;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EmployeeLearningTests
 {

@@ -38,19 +38,19 @@ namespace EmployeeLearningTests
         public void VideosDataHandlerVideosExistsTest()
         {
             videosDataHandler.Should().NotBeNull();
-            videosDataHandler.getAllVideos().Should().NotBeNull();
-            videosDataHandler.getAllVideos().Count.Should().BeGreaterThan(NUMBER_OF_VIDEOS_COUNT_ZERO);
+            videosDataHandler.GetAllVideos().Should().NotBeNull();
+            videosDataHandler.GetAllVideos().Count.Should().BeGreaterThan(NUMBER_OF_VIDEOS_COUNT_ZERO);
         }
 
         [Test]
         public void VideosDataHandlerAddVideoTest()
         {
             videosDataHandler.Should().NotBeNull();
-            videosDataHandler.getAllVideos().Should().NotBeNull();
-            int videoCountBeforeAdd = videosDataHandler.getAllVideos().Count;
+            videosDataHandler.GetAllVideos().Should().NotBeNull();
+            int videoCountBeforeAdd = videosDataHandler.GetAllVideos().Count;
             Video video = new("New Video");
-            videosDataHandler.addVideo(video);
-            int videoCountAfterAdd = videosDataHandler.getAllVideos().Count;
+            videosDataHandler.AddVideo(video);
+            int videoCountAfterAdd = videosDataHandler.GetAllVideos().Count;
             videoCountAfterAdd.Should().BeGreaterThan(videoCountBeforeAdd);
             Video foundVideo = videosDataHandler.GetVideoById(video.Id);
             foundVideo.Should().BeSameAs(video);
@@ -60,11 +60,11 @@ namespace EmployeeLearningTests
         public void VideosDataHandlerRemoveVideoTest()
         {
             videosDataHandler.Should().NotBeNull();
-            videosDataHandler.getAllVideos().Should().NotBeNull();
-            int videoCountBeforeRemove = videosDataHandler.getAllVideos().Count;
-            Video videoToRemove = videosDataHandler.getAllVideos()[VIDEO_INDEX_ZERO];
-            videosDataHandler.removeVideoById(videoToRemove.Id);
-            int videoCountAfterRemove = videosDataHandler.getAllVideos().Count;
+            videosDataHandler.GetAllVideos().Should().NotBeNull();
+            int videoCountBeforeRemove = videosDataHandler.GetAllVideos().Count;
+            Video videoToRemove = videosDataHandler.GetAllVideos()[VIDEO_INDEX_ZERO];
+            videosDataHandler.RemoveVideoById(videoToRemove.Id);
+            int videoCountAfterRemove = videosDataHandler.GetAllVideos().Count;
             videoCountAfterRemove.Should().BeLessThan(videoCountBeforeRemove);
             Action action = () =>
             {
@@ -77,8 +77,8 @@ namespace EmployeeLearningTests
         public void VideosDataHandlerGetAllVideosTest()
         {
             videosDataHandler.Should().NotBeNull();
-            videosDataHandler.getAllVideos().Should().NotBeNull();
-            int videoCount = videosDataHandler.getAllVideos().Count;
+            videosDataHandler.GetAllVideos().Should().NotBeNull();
+            int videoCount = videosDataHandler.GetAllVideos().Count;
             videoCount.Should().Be(VideoTestDataProvider.Instance.Videos.Count);
         }
 
@@ -86,7 +86,7 @@ namespace EmployeeLearningTests
         public void VideosDataHandlerGetVideoByIdTest()
         {
             videosDataHandler.Should().NotBeNull();
-            Video videoToGet = videosDataHandler.getAllVideos()[VIDEO_INDEX_ZERO];
+            Video videoToGet = videosDataHandler.GetAllVideos()[VIDEO_INDEX_ZERO];
             Video foundVideo = videosDataHandler.GetVideoById(videoToGet.Id);
             foundVideo.Should().BeSameAs(videoToGet);
         }

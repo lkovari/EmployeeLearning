@@ -1,14 +1,15 @@
 ﻿using EmployeeLearning.adapters.displaymodel;
 
-namespace EmployeeLearning.adapters.watchhistory
+
+namespace EmployeeLearning.adapters.displayjobroles
 {
-    public class DisplayHistoryOfWatchedVideosConsoleAdapter : IDisplayHistoryOfWatchedVideos
+    public class DisplayJobRolesConsoleAdapter : IDisplayJobRoles
     {
         /// <summary>
-        /// Display Watched Videos History
+        /// Display JobRoles
         /// </summary>
         /// <param name="model">AdapterModel</param>
-        public void DisplayHistory(AdapterModel model)
+        public void DisplayJobRole(AdapterModel model)
         {
             Console.WriteLine();
             Console.WriteLine(model.Tittle);

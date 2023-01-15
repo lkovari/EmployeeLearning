@@ -4,10 +4,10 @@ namespace EmployeeLearning.datahandler.videos
 {
     public interface IVideosDataHandler
     {
-        public void addVideo(Video video);
-        public void removeVideoById(Guid videoId);
-        public void displayAllVideos();
+        public void AddVideo(Video video);
+        public void RemoveVideoById(Guid videoId);
+        public void DisplayAllVideos();
         public Video GetVideoById(Guid videoId);
-        public List<Video> getAllVideos();
+        public List<Video> GetAllVideos();
     }
 }

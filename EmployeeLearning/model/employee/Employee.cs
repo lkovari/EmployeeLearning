@@ -1,5 +1,4 @@
 ﻿using EmployeeLearning.model.jobrole;
-using EmployeeLearning.model.video;
 
 namespace EmployeeLearning.model.employee
 {

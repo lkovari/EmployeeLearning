@@ -1,14 +1,13 @@
 ﻿using EmployeeLearning.adapters.displaymodel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeLearning.adapters.displayemployee
 {
     public class DisplayEmployeeConsoleAdapter : IDisplayEmployee
     {
+        /// <summary>
+        /// Display Employee Data
+        /// </summary>
+        /// <param name="model">AdapterModel</param>
         public void DisplayEmployee(AdapterModel model)
         {
             Console.WriteLine();

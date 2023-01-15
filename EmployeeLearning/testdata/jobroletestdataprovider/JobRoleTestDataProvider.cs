@@ -1,12 +1,7 @@
 ﻿using EmployeeLearning.model.jobrole;
 using EmployeeLearning.model.video;
-using EmployeeLearning.testdata.idprovider;
 using EmployeeLearning.testdata.videostore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EmployeeLearning.testdata.jobrolestore
 {

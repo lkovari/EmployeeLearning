@@ -5,7 +5,7 @@ namespace EmployeeLearning.adapters.assignedvideos
     public class DisplayAssignedVideosConsoleAdapter : IDisplayAssignedVideos
     {
         /// <summary>
-        /// Display assigned Video row
+        /// Display assigned Videos
         /// </summary>
         /// <param name="model"></param>
         public void DisplayAssignedVideos(AdapterModel model)

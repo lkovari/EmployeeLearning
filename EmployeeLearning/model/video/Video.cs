@@ -1,10 +1,4 @@
 ﻿
-
-using System.Runtime.Serialization;
-using System;
-using System.Transactions;
-using System.ComponentModel.DataAnnotations;
-
 namespace EmployeeLearning.model.video
 {
     public class Video : BaseModel
