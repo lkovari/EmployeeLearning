@@ -7,6 +7,7 @@ using EmployeeLearning.model.jobrole;
 using EmployeeLearning.model.video;
 using EmployeeLearning.testdata.employeestorage;
 using EmployeeLearning.testdata.idprovider;
+using EmployeeLearning.testdata.jobrolestore;
 using FluentAssertions;
 
 namespace EmployeeLearningTests
@@ -16,6 +17,7 @@ namespace EmployeeLearningTests
         #region CONSTANTS
         private readonly int EMPLOYEE_TEST_DATA_INDEX = 0;
         private readonly int EMPLOYEE_JOBROLE_LERNINGPATH_ZERO_COUNT = 0;
+        private readonly int FIRST_JOB_ROLE = 0;
         private readonly int EMPLOYEE_ASSIGNED_VIDEO_INDEX = 0;
         private readonly int VIDEO_WATCHED_0_TIMES = 0;
         private readonly int VIDEO_WATCHED_1_TIMES = 1;
@@ -57,20 +59,20 @@ namespace EmployeeLearningTests
         [Test]
         public void EmployeeEmployeJobRoleInstanceTest()
         {
-            employeeDataHandler.Employee.JobRole.Should().NotBeNull();
-            employeeDataHandler.Employee.JobRole.Id.Should().NotBeEmpty();
-            employeeDataHandler.Employee.JobRole.Name.Should().NotBeNull();
-            employeeDataHandler.Employee.JobRole.LearningPath.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRoles.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].Id.Should().NotBeEmpty();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].Name.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].LearningPath.Should().NotBeNull();
         }
 
         [Test]
         public void EmployeeEmployeJobRoleTest()
         {
-            employeeDataHandler.Employee.JobRole.Should().NotBeNull();
-            employeeDataHandler.Employee.JobRole.Id.Should().NotBeEmpty();
-            employeeDataHandler.Employee.JobRole.Name.Should().NotBeNull();
-            employeeDataHandler.Employee.JobRole.LearningPath.Should().NotBeNull();
-            employeeDataHandler.Employee.JobRole.LearningPath.Count.Should().
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].Should().NotBeNull();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].Id.Should().NotBeEmpty();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].Name.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].LearningPath.Should().NotBeNull();
+            employeeDataHandler.Employee.JobRoles[FIRST_JOB_ROLE].LearningPath.Count.Should().
                 BeGreaterThan(EMPLOYEE_JOBROLE_LERNINGPATH_ZERO_COUNT);
         }
 
@@ -79,10 +81,13 @@ namespace EmployeeLearningTests
         {
             Action action = () =>
             {
+                List<JobRole> jobRoles1 = new();
+                jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[4]);
+                jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[5]);
                 Employee newEmployee = new(null,
                     employeeDataHandler.Employee.UserName,
                     employeeDataHandler.Employee.Password,
-                    employeeDataHandler.Employee.JobRole);
+                    jobRoles1);
             };
             action.Should().Throw<ArgumentException>();
         }
@@ -153,6 +158,39 @@ namespace EmployeeLearningTests
             action.Should().Throw<Exception>();
         }
 
+        [Test]
+        public void EmployeeAddJobRoleTest()
+        {
+            employeeDataHandler.Should().NotBeNull();
+            int jobeRolesBeforeAddNew = employeeDataHandler.GetJobRoles().Count;
+            JobRole newJobRole = new JobRole("New JobRole",
+                JobRoleTestDataProvider.Instance.JobRoles[FIRST_JOB_ROLE].LearningPath);
+            employeeDataHandler.AddJobRole(newJobRole);
+            int jobeRolesAfterAddNew = employeeDataHandler.GetJobRoles().Count;
+            jobeRolesAfterAddNew.Should().BeGreaterThan(jobeRolesBeforeAddNew);
+        }
+
+        [Test]
+        public void EmployeeRemoveJobRoleTest()
+        {
+            employeeDataHandler.Should().NotBeNull();
+            JobRole newJobRole = new JobRole("New JobRole",
+                JobRoleTestDataProvider.Instance.JobRoles[FIRST_JOB_ROLE].LearningPath);
+            employeeDataHandler.AddJobRole(newJobRole);
+            int jobeRolesBeforeRemove = employeeDataHandler.GetJobRoles().Count;
+            employeeDataHandler.RemoveJobRoleById(newJobRole.Id);
+            int jobeRolesAfterRemove = employeeDataHandler.GetJobRoles().Count;
+            jobeRolesAfterRemove.Should().BeLessThan(jobeRolesBeforeRemove);
+        }
+
+        [Test]
+        public void EmployeeGetJobRoleByIdTest()
+        {
+            employeeDataHandler.Should().NotBeNull();
+            Guid JobRoleId = employeeDataHandler.GetJobRoles()[1].Id;
+            JobRole foundJobRole = employeeDataHandler.GetJobRoleById(JobRoleId);
+            foundJobRole.Should().BeSameAs(employeeDataHandler.GetJobRoles()[1]);
+        }
         #endregion
     }
 }

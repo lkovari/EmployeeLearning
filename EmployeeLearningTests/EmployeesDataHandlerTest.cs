@@ -1,5 +1,6 @@
 ﻿using EmployeeLearning.datahandler.employees;
 using EmployeeLearning.model.employee;
+using EmployeeLearning.model.jobrole;
 using EmployeeLearning.testdata.employeestorage;
 using EmployeeLearning.testdata.idprovider;
 using EmployeeLearning.testdata.jobrolestore;
@@ -49,10 +50,13 @@ namespace EmployeeLearningTests
         {
             employeesDataHandler.Should().NotBeNull();
             int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
+            List<JobRole> jobRoles1 = new();
+            jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[4]);
+            jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[5]);
             Employee employe = new("Alistair McIntyre",
                     "AMcIntyre",
                     "",
-                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
+                jobRoles1);
             employeesDataHandler.AddEmployee(employe);
             int employeCoundAfterAdd = employeesDataHandler.GetAllEmployees().Count;
             employeCoundAfterAdd.Should().BeGreaterThan(employeCoundBeforeAdd);
@@ -66,17 +70,19 @@ namespace EmployeeLearningTests
         {
             employeesDataHandler.Should().NotBeNull();
             int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
-
+            List<JobRole> jobRoles1 = new();
+            jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
+            jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
             Employee employeOne = 
                 new Employee("Ian Fraser Kilminster",
                 "JFKilminster",
                 "Motorhead",
-                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
+                jobRoles1);
             Employee employeTwo =
                 new Employee("Seimour Cray",
                 "SCray",
                 "",
-                JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX1]);
+                jobRoles1);
             List<Employee> employeesToAdd = new List<Employee>();
             employeesToAdd.Add(employeOne);
             employeesToAdd.Add(employeTwo);
@@ -89,12 +95,14 @@ namespace EmployeeLearningTests
         {
             employeesDataHandler.Should().NotBeNull();
             int employeCoundBeforeAdd = employeesDataHandler.GetAllEmployees().Count;
-
+            List<JobRole> jobRoles1 = new();
+            jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX0]);
+            jobRoles1.Add(JobRoleTestDataProvider.Instance.JobRoles[JOBROLE_INDEX1]);
             Employee employeOne =
                 new Employee("Johm Doe",
                 "JDoe",
                 "",
-                JobRoleTestDataProvider.Instance.JobRoles[0]);
+                jobRoles1);
 
             Action action = () =>
             {

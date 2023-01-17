@@ -5,8 +5,7 @@ namespace EmployeeLearning.model.employee
     public class Employee : BaseModel
     {
         #region PROPERTIES
-        private JobRole _jobRole;
-        public JobRole JobRole { get { return _jobRole; } }
+        public List<JobRole> JobRoles { get; private set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool IsAuthenticated { get; set; }
@@ -16,14 +15,18 @@ namespace EmployeeLearning.model.employee
         public Employee(string? name,
             string userName,
             string password,
-            JobRole? jobRole) : base(name)
+            List<JobRole> jobRoles) : base(name)
         {
-            if (jobRole == null)
+            if (jobRoles == null)
             {
-                throw new ArgumentException(string.Format("Parameter {{0}}", jobRole));
+                throw new ArgumentException(string.Format("Parameter {{0}}", jobRoles));
             } else
             {
-                _jobRole = jobRole;
+                if (JobRoles == null) 
+                { 
+                    JobRoles = new List<JobRole>(); 
+                }
+                JobRoles.AddRange(jobRoles);
             }
             if (userName == null)
             {

@@ -5,6 +5,7 @@ using EmployeeLearning.adapters.watchhistory;
 using EmployeeLearning.controller.video;
 using EmployeeLearning.datahandler.jobrole;
 using EmployeeLearning.model.employee;
+using EmployeeLearning.model.jobrole;
 using EmployeeLearning.model.video;
 
 namespace EmployeeLearning.datahandler.employee
@@ -37,7 +38,7 @@ namespace EmployeeLearning.datahandler.employee
             this.displayHistoryOfWatchedVideos = displayHistoryOfWatchedVideos;
             this.displayEmployeeAdapter = displayEmployeeAdapter;
 
-            jobRoleDataHandler = new JobRoleDataHandler(employee.JobRole);
+            jobRoleDataHandler = new JobRoleDataHandler(employee.JobRoles[0]);
             videoDataHandler = new VideoDataHandler();
         }
         #endregion
@@ -45,14 +46,16 @@ namespace EmployeeLearning.datahandler.employee
         #region PUBLIC METHODS
         public void DisplayAssignedVideos()
         {
-            jobRoleDataHandler = new JobRoleDataHandler(Employee.JobRole);
+            jobRoleDataHandler = new JobRoleDataHandler(Employee.JobRoles[0]);
             List<string> assignedVideos = new();
             jobRoleDataHandler.GetAssignedVideos().ForEach(video => {
                 string textToDisplay = string.Format("ID {0} Tittle {1}", video.Id, video.Name);
                 assignedVideos.Add(textToDisplay);
             });
             AdapterModel adapterModelForAssignedVideos = new();
-            adapterModelForAssignedVideos.Tittle = "Assigned Videos to JobRole " + Employee.JobRole.Name;
+            string jobRoleNames = "";
+            Employee.JobRoles.Select(jobRole => jobRole.Name).ToList().ForEach(jobRoleName => { jobRoleNames += " " + jobRoleName; });
+            adapterModelForAssignedVideos.Tittle = "Assigned Videos to JobRole " + jobRoleNames;
             adapterModelForAssignedVideos.Data.AddRange(assignedVideos);
             displayAssignedVideos.DisplayAssignedVideos(adapterModelForAssignedVideos);
         }
@@ -134,9 +137,31 @@ namespace EmployeeLearning.datahandler.employee
         {
             AdapterModel adapterModelForEmployee = new();
             adapterModelForEmployee.Tittle = "Employee Data";
+            string jobRoleNames = "";
+            Employee.JobRoles.Select(jobRole => jobRole.Name).ToList().ForEach(jobRoleName => { jobRoleNames += " " + jobRoleName; });
             adapterModelForEmployee.Text =
-                String.Format("Name: {0} User name: {1} JobRole: {2}", Employee.Name, Employee.UserName, Employee.JobRole.Name);
+                String.Format("Name: {0} User name: {1} JobRole: {2}", Employee.Name, Employee.UserName, jobRoleNames);
             displayEmployeeAdapter.DisplayEmployee(adapterModelForEmployee);
+        }
+
+        public List<JobRole> GetJobRoles()
+        {
+            return Employee.JobRoles;
+        }
+
+        public JobRole GetJobRoleById(Guid jobRoleId)
+        {
+            return Employee.JobRoles.Single(jobRole => jobRole.Id == jobRoleId);
+        }
+
+        public void RemoveJobRoleById(Guid jobRoleId)
+        {
+            Employee.JobRoles.Remove(GetJobRoleById(jobRoleId));
+        }
+
+        public void AddJobRole(JobRole jobRole)
+        {
+            Employee.JobRoles.Add(jobRole);
         }
         #endregion
     }
